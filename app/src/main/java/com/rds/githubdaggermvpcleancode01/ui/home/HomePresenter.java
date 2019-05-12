@@ -6,9 +6,6 @@ import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 
 import java.util.List;
 
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -17,7 +14,6 @@ public class HomePresenter implements HomePresenterContract {
     private final DataManager dataManager;
 
     private HomeView view;
-
 
     private CompositeDisposable disposables;
 

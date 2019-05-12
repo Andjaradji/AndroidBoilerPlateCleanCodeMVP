@@ -16,15 +16,30 @@ import com.rds.githubdaggermvpcleancode01.utils.OnItemClickListener;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>  {
-//    private final OnItemClickListener listener;
     protected OnItemClickListener listener;
     private List<GithubUser> userList;
     private Context context;
 
-    public HomeAdapter(Context context, List<GithubUser> userList, OnItemClickListener listener) {
-        this.listener = listener;
-        this.userList = userList;
+    public HomeAdapter(Context context) {
         this.context = context;
+    }
+
+//    public HomeAdapter(Context context, List<GithubUser> userList, OnItemClickListener listener) {
+//        this.listener = listener;
+//        this.userList = userList;
+//        this.context = context;
+//    }
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public List<GithubUser> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<GithubUser> userList) {
+        this.userList = userList;
     }
 
     @Override
@@ -36,7 +51,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>  {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         GithubUser user = userList.get(i);
-        viewHolder.click(user,listener);
+        viewHolder.click(listener);
 
         viewHolder.txtUserName.setText(user.getLogin());
         Glide.with(context).load(user.getAvatarUrl()).placeholder(android.R.drawable.ic_menu_gallery)
@@ -59,11 +74,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>  {
             imgUserPic = itemView.findViewById(R.id.iv_user_pic);
         }
 
-        public void click(final GithubUser githubUser, final OnItemClickListener listener) {
+        public void click(final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(v, getAdapterPosition() );
+                    listener.onClick(getAdapterPosition());
                 }
             });
         }

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.rds.githubdaggermvpcleancode01.BaseApp;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
@@ -24,6 +23,12 @@ public class HomeActivity extends BaseActivity implements HomeView {
 
     @Inject
     HomePresenterContract homePresenter;
+
+    @Inject
+    HomeAdapter homeAdapter;
+
+
+    OnItemClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +76,18 @@ public class HomeActivity extends BaseActivity implements HomeView {
 
     @Override
     public void getUserListSuccess(final List<GithubUser> githubUsers) {
-        HomeAdapter homeAdapter = new HomeAdapter(BaseApp.get(this), githubUsers, new OnItemClickListener() {
+        homeAdapter.setUserList(githubUsers);
+
+        listener = new OnItemClickListener() {
             @Override
-            public void onClick(View view, int position) {
-                GithubUser user = githubUsers.get(position);
+            public void onClick(int position) {
+                GithubUser user = homeAdapter.getUserList().get(position);
                 Toast.makeText(getApplicationContext(),user.getLogin(),Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+
+        homeAdapter.setListener(listener);
+
         githubUserList.setAdapter(homeAdapter);
     }
 }

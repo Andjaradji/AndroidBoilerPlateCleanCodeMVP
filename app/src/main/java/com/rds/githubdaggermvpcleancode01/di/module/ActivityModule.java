@@ -5,11 +5,9 @@ import android.content.Context;
 
 import com.rds.githubdaggermvpcleancode01.data.DataManager;
 import com.rds.githubdaggermvpcleancode01.di.ActivityContext;
+import com.rds.githubdaggermvpcleancode01.ui.home.HomeAdapter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenterContract;
-
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -37,5 +35,13 @@ public class ActivityModule {
     HomePresenterContract provideHomePresenter(DataManager dataManager){
         return new HomePresenter(dataManager);
     }
+
+
+    @Provides
+    HomeAdapter provideHomeAdapter() {
+        return new HomeAdapter(mActivity);
+    }
+
+
 
 }
