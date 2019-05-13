@@ -2,12 +2,15 @@ package com.rds.githubdaggermvpcleancode01.di.module;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 
 import com.rds.githubdaggermvpcleancode01.data.DataManager;
 import com.rds.githubdaggermvpcleancode01.di.ActivityContext;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomeAdapter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenterContract;
+import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailPresenter;
+import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailPresenterContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -36,10 +39,20 @@ public class ActivityModule {
         return new HomePresenter(dataManager);
     }
 
+    @Provides
+    UserDetailPresenterContract provideUserDetailPresenter(DataManager dataManager) {
+        return new UserDetailPresenter(dataManager);
+    }
+
 
     @Provides
     HomeAdapter provideHomeAdapter() {
         return new HomeAdapter(mActivity);
+    }
+
+    @Provides
+    LinearLayoutManager provideLinearLayoutManager() {
+        return new LinearLayoutManager(mActivity);
     }
 
 

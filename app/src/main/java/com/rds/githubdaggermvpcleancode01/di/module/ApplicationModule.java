@@ -6,7 +6,6 @@ import android.content.Context;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkService;
 import com.rds.githubdaggermvpcleancode01.di.ApplicationContext;
 
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -36,7 +35,4 @@ public class ApplicationModule {
     NetworkService provideNetworkService(){
         return NetworkService.Factory.makeNetworkService(mApplication);
     }
-
-
-
 }

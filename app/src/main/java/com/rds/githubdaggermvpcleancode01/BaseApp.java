@@ -6,12 +6,9 @@ import android.content.Context;
 import com.rds.githubdaggermvpcleancode01.di.component.ApplicationComponent;
 import com.rds.githubdaggermvpcleancode01.di.component.DaggerApplicationComponent;
 import com.rds.githubdaggermvpcleancode01.di.module.ApplicationModule;
-import com.rds.githubdaggermvpcleancode01.ui.home.HomeView;
 
 public class BaseApp extends Application {
     private ApplicationComponent mApplicationComponent;
-
-
 
     @Override
     public void onCreate() {

@@ -18,6 +18,7 @@ public class DataManager {
     private final NetworkService mNetworkService;
     private Disposable disposable;
     private List<GithubUser> githubUserList;
+    private GithubUser user;
 
     @Inject
     public DataManager(NetworkService networkService) {
@@ -55,12 +56,44 @@ public class DataManager {
     }
 
 
+    public Disposable getUserDetail(final GetUserDetailCallback callback, String userName) {
+        mNetworkService.getUserDetail(userName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<GithubUser>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
 
+                    @Override
+                    public void onNext(GithubUser githubUser) {
+                        user = githubUser;
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onError(new NetworkError(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.onSuccess(user);
+                    }
+                });
+
+        return disposable;
+    }
 
 
     public interface GetUserListCallback{
         void onSuccess(List<GithubUser> githubUserList);
+
+        void onError(NetworkError networkError);
+    }
+
+    public interface GetUserDetailCallback {
+        void onSuccess(GithubUser githubUser);
 
         void onError(NetworkError networkError);
     }

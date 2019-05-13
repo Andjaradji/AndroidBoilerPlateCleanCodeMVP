@@ -74,6 +74,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>  {
             imgUserPic = itemView.findViewById(R.id.iv_user_pic);
         }
 
+
         public void click(final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

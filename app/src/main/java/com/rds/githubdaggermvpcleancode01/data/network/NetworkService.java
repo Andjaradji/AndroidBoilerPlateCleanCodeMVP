@@ -17,11 +17,15 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkService {
     @GET("/users")
     Observable<List<GithubUser>> getUsers(@Query("per_page")int perPage, @Query("page") int page);
+
+    @GET("/users/{user_name}")
+    Observable<GithubUser> getUserDetail(@Path("user_name") String userName);
 
     class Factory {
         public static NetworkService makeNetworkService (Context context){

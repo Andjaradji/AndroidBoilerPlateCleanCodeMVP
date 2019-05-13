@@ -1,5 +1,6 @@
 package com.rds.githubdaggermvpcleancode01.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailActivity;
 import com.rds.githubdaggermvpcleancode01.utils.OnItemClickListener;
 
 import java.util.List;
@@ -28,6 +30,10 @@ public class HomeActivity extends BaseActivity implements HomeView {
     HomeAdapter homeAdapter;
 
 
+    @Inject
+    LinearLayoutManager linearLayoutManager;
+
+
     OnItemClickListener listener;
 
     @Override
@@ -43,8 +49,6 @@ public class HomeActivity extends BaseActivity implements HomeView {
 
     }
 
-
-
     private void renderView(){
         setContentView(R.layout.activity_home);
         githubUserList = findViewById(R.id.rv_home_list);
@@ -52,7 +56,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
     }
 
     public void init(){
-        githubUserList.setLayoutManager(new LinearLayoutManager(this));
+        githubUserList.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -64,8 +68,6 @@ public class HomeActivity extends BaseActivity implements HomeView {
     @Override
     public void hideLoading() {
         progressBar.setVisibility(View.GONE);
-
-
     }
 
     @Override
@@ -83,6 +85,9 @@ public class HomeActivity extends BaseActivity implements HomeView {
             public void onClick(int position) {
                 GithubUser user = homeAdapter.getUserList().get(position);
                 Toast.makeText(getApplicationContext(),user.getLogin(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, UserDetailActivity.class);
+                intent.putExtra("username", user.getLogin());
+                startActivity(intent);
             }
         };
 
