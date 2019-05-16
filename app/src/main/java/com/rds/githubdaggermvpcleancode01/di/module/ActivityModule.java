@@ -34,6 +34,11 @@ public class ActivityModule {
         return mActivity;
     }
 
+//    @Provides
+//    HomePresenterContract provideHomePresenter(DataManager dataManager){
+//        return new HomePresenter(dataManager);
+//    }
+
     @Provides
     HomePresenterContract provideHomePresenter(DataManager dataManager){
         return new HomePresenter(dataManager);

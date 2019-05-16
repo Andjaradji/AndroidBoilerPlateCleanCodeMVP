@@ -17,7 +17,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
 
     @Inject
     UserDetailPresenterContract userDetailPresenter;
-    private GithubUser user;
     private ImageView imgUserProfile;
     private TextView txtUserNameProfile;
     private ProgressBar progressBar;
@@ -45,13 +44,13 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
 
     }
 
+
     @Override
-    public void getUserDetailSuccess(GithubUser githubUser) {
+    public void handleResult(GithubUser githubUser) {
         txtUserNameProfile.setText(githubUser.getLogin());
 
         Glide.with(this).load(githubUser.getAvatarUrl()).placeholder(android.R.drawable.ic_menu_gallery)
                 .into(imgUserProfile);
-
     }
 
     @Override
@@ -68,4 +67,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
     public void onFailure(String appErrorMessage) {
 
     }
+
+
 }

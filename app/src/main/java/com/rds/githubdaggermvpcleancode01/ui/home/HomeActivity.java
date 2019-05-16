@@ -29,7 +29,6 @@ public class HomeActivity extends BaseActivity implements HomeView {
     @Inject
     HomeAdapter homeAdapter;
 
-
     @Inject
     LinearLayoutManager linearLayoutManager;
 
@@ -76,8 +75,29 @@ public class HomeActivity extends BaseActivity implements HomeView {
     }
 
 
+//    @Override
+//    public void getUserListSuccess(final List<GithubUser> githubUsers) {
+//        homeAdapter.setUserList(githubUsers);
+//
+//        listener = new OnItemClickListener() {
+//            @Override
+//            public void onClick(int position) {
+//                GithubUser user = homeAdapter.getUserList().get(position);
+//                Toast.makeText(getApplicationContext(),user.getLogin(),Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(HomeActivity.this, UserDetailActivity.class);
+//                intent.putExtra("username", user.getLogin());
+//                startActivity(intent);
+//            }
+//        };
+//
+//        homeAdapter.setListener(listener);
+//
+//        githubUserList.setAdapter(homeAdapter);
+//    }
+
+
     @Override
-    public void getUserListSuccess(final List<GithubUser> githubUsers) {
+    public void handleResult(List<GithubUser> githubUsers) {
         homeAdapter.setUserList(githubUsers);
 
         listener = new OnItemClickListener() {

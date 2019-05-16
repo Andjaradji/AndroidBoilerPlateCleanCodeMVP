@@ -1,5 +1,6 @@
 package com.rds.githubdaggermvpcleancode01.data;
 
+import com.rds.githubdaggermvpcleancode01.callback.RequestCallback;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkError;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkService;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
@@ -25,7 +26,7 @@ public class DataManager {
         this.mNetworkService = networkService;
     }
 
-    public Disposable getDefaultUsers(final GetUserListCallback callback){
+    public Disposable getDefaultUsers(final RequestCallback<List<GithubUser>> callback) {
         mNetworkService.getUsers(100,1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,30 +34,28 @@ public class DataManager {
                     @Override
                     public void onSubscribe(Disposable d) {
                         disposable = d;
+
                     }
 
                     @Override
                     public void onNext(List<GithubUser> githubUsers) {
                         githubUserList = new ArrayList<>(githubUsers);
-
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        callback.onError(new NetworkError(throwable));
+                        callback.onRequestError(new NetworkError(throwable));
                     }
 
                     @Override
                     public void onComplete() {
-                        callback.onSuccess(githubUserList);
+                        callback.onRequestSuccess(githubUserList);
                     }
                 });
-
         return disposable;
     }
 
-
-    public Disposable getUserDetail(final GetUserDetailCallback callback, String userName) {
+    public Disposable getUserDetail(final RequestCallback<GithubUser> callback, String userName) {
         mNetworkService.getUserDetail(userName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -73,28 +72,16 @@ public class DataManager {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError(new NetworkError(e));
+                        callback.onRequestError(new NetworkError(e));
                     }
 
                     @Override
                     public void onComplete() {
-                        callback.onSuccess(user);
+                        callback.onRequestSuccess(user);
                     }
                 });
 
         return disposable;
     }
 
-
-    public interface GetUserListCallback{
-        void onSuccess(List<GithubUser> githubUserList);
-
-        void onError(NetworkError networkError);
-    }
-
-    public interface GetUserDetailCallback {
-        void onSuccess(GithubUser githubUser);
-
-        void onError(NetworkError networkError);
-    }
 }

@@ -8,7 +8,8 @@ import com.rds.githubdaggermvpcleancode01.di.component.ApplicationComponent;
 import com.rds.githubdaggermvpcleancode01.di.component.DaggerActivityComponent;
 import com.rds.githubdaggermvpcleancode01.di.module.ActivityModule;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenterContract> extends AppCompatActivity {
+    protected T mPresenter;
 
     private ActivityComponent mActivityComponent;
 
@@ -28,4 +29,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         return BaseApp.get(this).getComponent();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPresenter != null) {
+            mPresenter.onResume();
+        }
+    }
 }
