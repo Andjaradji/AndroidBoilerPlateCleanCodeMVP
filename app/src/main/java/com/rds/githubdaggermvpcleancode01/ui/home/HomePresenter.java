@@ -100,6 +100,4 @@ public class HomePresenter extends BasePresenter<HomeView, List<GithubUser>> imp
     public void setView(HomeView view) {
         this.mView = view;
     }
-
-
 }

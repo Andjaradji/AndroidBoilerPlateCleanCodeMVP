@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.ui.login.LoginActivity;
 import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailActivity;
 import com.rds.githubdaggermvpcleancode01.utils.OnItemClickListener;
 
@@ -39,6 +40,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
     protected void onCreate(Bundle savedInstanceState) {
         activityComponent().inject(this);
         super.onCreate(savedInstanceState);
+        launchLogin();
         renderView();
         init();
 
@@ -74,27 +76,10 @@ public class HomeActivity extends BaseActivity implements HomeView {
 
     }
 
-
-//    @Override
-//    public void getUserListSuccess(final List<GithubUser> githubUsers) {
-//        homeAdapter.setUserList(githubUsers);
-//
-//        listener = new OnItemClickListener() {
-//            @Override
-//            public void onClick(int position) {
-//                GithubUser user = homeAdapter.getUserList().get(position);
-//                Toast.makeText(getApplicationContext(),user.getLogin(),Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(HomeActivity.this, UserDetailActivity.class);
-//                intent.putExtra("username", user.getLogin());
-//                startActivity(intent);
-//            }
-//        };
-//
-//        homeAdapter.setListener(listener);
-//
-//        githubUserList.setAdapter(homeAdapter);
-//    }
-
+    private void launchLogin() {
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
+    }
 
     @Override
     public void handleResult(List<GithubUser> githubUsers) {

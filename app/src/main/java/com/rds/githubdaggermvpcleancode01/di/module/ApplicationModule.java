@@ -3,6 +3,7 @@ package com.rds.githubdaggermvpcleancode01.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.rds.githubdaggermvpcleancode01.data.network.AuthService;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkService;
 import com.rds.githubdaggermvpcleancode01.di.ApplicationContext;
 
@@ -35,4 +36,11 @@ public class ApplicationModule {
     NetworkService provideNetworkService(){
         return NetworkService.Factory.makeNetworkService(mApplication);
     }
+
+    @Provides
+    @Singleton
+    AuthService providerAuthService() {
+        return AuthService.Factory.makeLoginService(mApplication);
+    }
+
 }

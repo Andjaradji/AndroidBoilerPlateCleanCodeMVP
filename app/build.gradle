@@ -13,6 +13,7 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
+            buildConfigField "String", "LOGIN_BASE_URL", "\"http://jsonplaceholder.typicode.com/\""
             buildConfigField "int", "CACHETIME", "432000" // 5days
         }
         release {
@@ -65,6 +66,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit2Version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit2Version"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+
 
     // reactive
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"

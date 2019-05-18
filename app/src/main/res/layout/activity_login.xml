@@ -8,16 +8,17 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="40dp"
         app:cardCornerRadius="7dp"
         app:cardElevation="22dp">
 
         <TextView
             style="@style/TextStyle.Heading"
+            android:id="@+id/tv_login_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
@@ -42,6 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginTop="80dp"
                     android:cursorVisible="true"
                     android:gravity="center|start|bottom"
                     android:hint="@string/email"
@@ -88,7 +90,7 @@
                 android:padding="10dp"
                 android:text="@string/login"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <ImageButton
                 android:id="@+id/google_login_button"
@@ -109,6 +111,24 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/facebook_sign_in_button"
                 android:padding="10dp" />
+
+            <RelativeLayout
+                android:id="@+id/app_register_layout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/text_register" />
+
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

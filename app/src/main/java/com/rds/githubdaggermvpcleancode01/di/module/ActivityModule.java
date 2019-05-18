@@ -9,6 +9,8 @@ import com.rds.githubdaggermvpcleancode01.di.ActivityContext;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomeAdapter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenterContract;
+import com.rds.githubdaggermvpcleancode01.ui.login.LoginPresenter;
+import com.rds.githubdaggermvpcleancode01.ui.login.LoginPresenterContract;
 import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailPresenter;
 import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailPresenterContract;
 
@@ -34,11 +36,6 @@ public class ActivityModule {
         return mActivity;
     }
 
-//    @Provides
-//    HomePresenterContract provideHomePresenter(DataManager dataManager){
-//        return new HomePresenter(dataManager);
-//    }
-
     @Provides
     HomePresenterContract provideHomePresenter(DataManager dataManager){
         return new HomePresenter(dataManager);
@@ -47,6 +44,11 @@ public class ActivityModule {
     @Provides
     UserDetailPresenterContract provideUserDetailPresenter(DataManager dataManager) {
         return new UserDetailPresenter(dataManager);
+    }
+
+    @Provides
+    LoginPresenterContract provideLoginPresenter(DataManager dataManager) {
+        return new LoginPresenter(dataManager);
     }
 
 
@@ -59,7 +61,5 @@ public class ActivityModule {
     LinearLayoutManager provideLinearLayoutManager() {
         return new LinearLayoutManager(mActivity);
     }
-
-
 
 }
