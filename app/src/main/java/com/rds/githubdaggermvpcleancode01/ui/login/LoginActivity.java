@@ -64,9 +64,11 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         mUserCredentials = new LoginCredentials();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        mUserCredentials.setTitle("foo");
-        mUserCredentials.setBody("bar");
-        mUserCredentials.setId(1);
+//        mUserCredentials.setTitle("foo");
+//        mUserCredentials.setBody("bar");
+//        mUserCredentials.setId(1);
+        mUserCredentials.setPassword(password);
+        mUserCredentials.setEmail(email);
         loginPresenter.sendAppUserCredentials(mUserCredentials);
 //            loginPresenter.sendAppUserCredentials("foo","bar",1);
     }
@@ -83,7 +85,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
 
     @Override
     public void onFailure(String appErrorMessage) {
-
+        tvLoginTitle.setText(appErrorMessage);
     }
 
     @Override

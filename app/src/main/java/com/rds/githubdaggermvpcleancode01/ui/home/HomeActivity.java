@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -11,10 +14,12 @@ import android.widget.Toast;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesActivity;
 import com.rds.githubdaggermvpcleancode01.ui.login.LoginActivity;
 import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailActivity;
 import com.rds.githubdaggermvpcleancode01.utils.OnItemClickListener;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,14 +38,14 @@ public class HomeActivity extends BaseActivity implements HomeView {
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-
     OnItemClickListener listener;
+    private Menu menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activityComponent().inject(this);
         super.onCreate(savedInstanceState);
-        launchLogin();
+//        launchLogin();
         renderView();
         init();
 
@@ -82,8 +87,9 @@ public class HomeActivity extends BaseActivity implements HomeView {
     }
 
     @Override
-    public void handleResult(List<GithubUser> githubUsers) {
-        homeAdapter.setUserList(githubUsers);
+    public void handleResult(Serializable githubUsers) {
+        List<GithubUser> gitUserList = (List<GithubUser>) githubUsers;
+        homeAdapter.setUserList(gitUserList);
 
         listener = new OnItemClickListener() {
             @Override
@@ -92,6 +98,8 @@ public class HomeActivity extends BaseActivity implements HomeView {
                 Toast.makeText(getApplicationContext(),user.getLogin(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HomeActivity.this, UserDetailActivity.class);
                 intent.putExtra("username", user.getLogin());
+                intent.putExtra("parent", "HomeActivity");
+                intent.putExtra("id", user.getId());
                 startActivity(intent);
             }
         };
@@ -99,5 +107,24 @@ public class HomeActivity extends BaseActivity implements HomeView {
         homeAdapter.setListener(listener);
 
         githubUserList.setAdapter(homeAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        menuItem = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.see_fav_db) {
+            Intent intent = new Intent(HomeActivity.this, FavoritesActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

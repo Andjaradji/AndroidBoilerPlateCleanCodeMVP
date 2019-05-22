@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.rds.githubdaggermvpcleancode01.BaseApp;
+import com.rds.githubdaggermvpcleancode01.data.db.AppDatabase;
 import com.rds.githubdaggermvpcleancode01.data.network.AuthService;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkService;
 import com.rds.githubdaggermvpcleancode01.di.ApplicationContext;
@@ -26,6 +27,8 @@ public interface ApplicationComponent {
     NetworkService networkService();
 
     AuthService authService();
+
+    AppDatabase appDatabase();
 
 }
 

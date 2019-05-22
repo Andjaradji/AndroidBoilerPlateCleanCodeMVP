@@ -3,6 +3,7 @@ package com.rds.githubdaggermvpcleancode01.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.rds.githubdaggermvpcleancode01.data.db.AppDatabase;
 import com.rds.githubdaggermvpcleancode01.data.network.AuthService;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkService;
 import com.rds.githubdaggermvpcleancode01.di.ApplicationContext;
@@ -39,8 +40,15 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    AuthService providerAuthService() {
+    AuthService provideAuthService() {
         return AuthService.Factory.makeLoginService(mApplication);
     }
+
+    @Provides
+    @Singleton
+    AppDatabase provideAppDatabase() {
+        return AppDatabase.getDatabase(mApplication);
+    }
+
 
 }

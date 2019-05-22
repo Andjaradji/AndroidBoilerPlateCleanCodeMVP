@@ -23,9 +23,11 @@ public interface AuthService {
 //    @POST("/posts")
 //    @FormUrlEncoded
 //    Observable<LoginResponse> goLogin (@Field("title") String title, @Field("body") String body, @Field("userId") long userId);
-
-    @POST("/posts")
+@POST("/user/login")
     Observable<LoginResponse> goLogin(@Body LoginCredentials credentials);
+
+//    @POST("/posts")
+//    Observable<LoginResponse> goLogin(@Body LoginCredentials credentials);
 
     class Factory {
         public static AuthService makeLoginService(Context context) {

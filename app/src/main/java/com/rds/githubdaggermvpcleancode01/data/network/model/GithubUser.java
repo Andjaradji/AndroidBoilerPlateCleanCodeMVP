@@ -2,7 +2,9 @@ package com.rds.githubdaggermvpcleancode01.data.network.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GithubUser {
+import java.io.Serializable;
+
+public class GithubUser implements Serializable {
     private long id;
     private String login;
     private String url;
