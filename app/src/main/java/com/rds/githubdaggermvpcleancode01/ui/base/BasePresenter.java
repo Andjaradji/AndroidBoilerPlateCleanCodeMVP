@@ -32,6 +32,21 @@ public class BasePresenter<T extends BaseView, V> implements BasePresenterContra
 
     }
 
+    @Override
+    public void onUserAdded() {
+
+    }
+
+    @Override
+    public void onUserRemoved() {
+
+    }
+
+    @Override
+    public void onUserFound(V v) {
+
+    }
+
 
     @Override
     public void onResume() {

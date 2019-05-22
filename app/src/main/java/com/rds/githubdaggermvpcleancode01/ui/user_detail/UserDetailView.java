@@ -10,4 +10,6 @@ public interface UserDetailView extends BaseView {
 //    void checkDb(Serializable favUser);
 
     void showSnackbar(String message);
+
+    void checkUserInDb(Serializable data);
 }

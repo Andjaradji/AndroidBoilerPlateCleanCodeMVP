@@ -90,9 +90,9 @@ public class FavoritesActivity extends BaseActivity implements FavoritesView {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        favoritesPresenter.getFavoriteList();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        favoritesPresenter.getFavoriteList();
+//    }
 }

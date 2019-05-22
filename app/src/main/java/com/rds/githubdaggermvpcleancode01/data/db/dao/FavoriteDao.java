@@ -10,7 +10,7 @@ import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
@@ -18,16 +18,16 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface FavoriteDao {
 
     @Query("SELECT * FROM favorite_users ORDER BY name ASC")
-    Single<List<FavUser>> findAllFavoriteUsers();
+    Flowable<List<FavUser>> findAllFavoriteUsers();
 
     @Delete
-    void deleteFavUsers(FavUser favUser);
+    void deleteUser(FavUser favUser);
 
     @Query("DELETE FROM favorite_users")
     void deleteAllFavUsers();
 
     @Insert(onConflict = REPLACE)
-    long insertFavoriteUsers(FavUser user);
+    void insertFavoriteUsers(FavUser user);
 
     @Update
     int updateFavUser(FavUser user);

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.rds.githubdaggermvpcleancode01.R;
-import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
 
@@ -32,9 +31,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
 
     private Menu menuItem;
 
-    private FavUser favUser = new FavUser();
-    private String parentClass = "";
     private long userId;
+    private String favUserName;
+    private String favUserImageUrl;
 
 
     @Override
@@ -47,12 +46,12 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
         Bundle extras = getIntent().getExtras();
         String userName = extras.getString("username");
 
-        parentClass = extras.getString("parent");
         userId = extras.getLong("id");
 
         userDetailPresenter.setView(this);
         userDetailPresenter.getUserDetail(userName);
-        favoriteState();
+        userDetailPresenter.checkUser(userId);
+
     }
 
     private void renderView() {
@@ -60,7 +59,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
         imgUserProfile = findViewById(R.id.iv_user_big_pic);
         txtUserNameProfile = findViewById(R.id.tv_username_detail);
         progressBar = findViewById(R.id.progressbar);
-
     }
 
     @Override
@@ -74,40 +72,20 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
 
     @Override
     public void handleResult(Serializable data) {
-//            if (data instanceof GithubUser) {
         GithubUser resultGithubUser = (GithubUser) data;
-        String name = resultGithubUser.getLogin();
-        String imgUrl = resultGithubUser.getAvatarUrl();
-        long id = resultGithubUser.getId();
-        txtUserNameProfile.setText(name);
+        favUserName = resultGithubUser.getLogin();
+        favUserImageUrl = resultGithubUser.getAvatarUrl();
+        userId = resultGithubUser.getId();
 
-        Glide.with(this).load(imgUrl).placeholder(android.R.drawable.ic_menu_gallery)
-                .into(imgUserProfile);
-        favUser.setName(name);
-        favUser.setImage(imgUrl);
-        favUser.setId(id);
-//            }
-
-//            else if (data instanceof FavUser) {
-//                FavUser resultFavUser = (FavUser) data;
-//                String name = resultFavUser.getName() + " from favorites";
-//                String imgUrl = resultFavUser.getImage();
-//                long id = resultFavUser.getId();
-//                txtUserNameProfile.setText(name);
-//
-//                Glide.with(this).load(imgUrl).placeholder(android.R.drawable.ic_menu_gallery)
-//                        .into(imgUserProfile);
-//                favUser.setName(name);
-//                favUser.setImage(imgUrl);
-//                favUser.setUserId(id);
-//
-//            }
+        txtUserNameProfile.setText(favUserName);
+        Glide.with(this).load(favUserImageUrl).into(imgUserProfile);
     }
 
     @Override
     public void showSnackbar(String message) {
         Snackbar.make(imgUserProfile, message, Snackbar.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void showLoading() {
@@ -131,7 +109,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
                 if (isFavorite) {
                     userDetailPresenter.removeFromFav(userId);
                 } else {
-                    userDetailPresenter.insertToFav(favUser);
+                    userDetailPresenter.insertToFav(userId, favUserName, favUserImageUrl);
                 }
 
                 isFavorite = !isFavorite;
@@ -141,8 +119,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
     }
 
 
-    private void favoriteState() {
-        isFavorite = userDetailPresenter.checkUser(userId) != null;
+    @Override
+    public void checkUserInDb(Serializable data) {
+        isFavorite = data != null;
     }
 
     private void setIsFavorite() {
@@ -153,9 +132,4 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        isFavorite = userDetailPresenter.checkUser(userId) != null;
-//    }
 }

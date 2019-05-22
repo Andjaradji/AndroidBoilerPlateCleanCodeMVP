@@ -6,12 +6,10 @@ import com.rds.githubdaggermvpcleancode01.ui.base.BasePresenter;
 
 import java.io.Serializable;
 
-import io.reactivex.disposables.Disposable;
-
-public class FavoritePresenter extends BasePresenter<FavoritesView, Serializable> implements FavoritesPresenterContract {
+public class FavoritesPresenter extends BasePresenter<FavoritesView, Serializable> implements FavoritesPresenterContract {
     private final DataManager dataManager;
 
-    public FavoritePresenter(DataManager mDataManager) {
+    public FavoritesPresenter(DataManager mDataManager) {
         super(mDataManager);
         this.dataManager = mDataManager;
     }
@@ -30,10 +28,12 @@ public class FavoritePresenter extends BasePresenter<FavoritesView, Serializable
         mView.hideLoading();
     }
 
+
     @Override
     public void getFavoriteList() {
-        Disposable disposable = dataManager.getAllFavoriteUsers(this);
-        mDisposables.add(disposable);
+        dataManager.getAllFavoriteUsers(this);
+//        Disposable disposable = dataManager.getAllFavoriteUsers(this);
+//        mDisposables.add(disposable);
     }
 
     @Override

@@ -1,63 +1,12 @@
 package com.rds.githubdaggermvpcleancode01.ui.user_detail;
 
 import com.rds.githubdaggermvpcleancode01.data.DataManager;
-import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkError;
 import com.rds.githubdaggermvpcleancode01.ui.base.BasePresenter;
 
 import java.io.Serializable;
 
 import io.reactivex.disposables.Disposable;
-
-//public class UserDetailPresenter implements UserDetailPresenterContract {
-//    private final DataManager dataManager;
-//
-//    private CompositeDisposable disposables;
-//
-//    private UserDetailView view;
-//
-//    public UserDetailPresenter(DataManager dataManager) {
-//        this.dataManager = dataManager;
-//        this.disposables = new CompositeDisposable();
-//    }
-//
-//    @Override
-//    public void getUserDetail(String userName) {
-//        view.showLoading();
-//        Disposable disposable = dataManager.getUserDetail(new RequestCallback<GithubUser>() {
-//            @Override
-//            public void beforeRequest() {
-//                view.showLoading();
-//            }
-//
-//            @Override
-//            public void onRequestSuccess(GithubUser githubUser) {
-//                view.hideLoading();
-//                view.handleResult(githubUser);
-//            }
-//
-//            @Override
-//            public void onRequestError(NetworkError networkError) {
-//                view.hideLoading();
-//                view.onFailure(networkError.getAppErrorMessage());
-//            }
-//
-//            @Override
-//            public void requestComplete() {
-//                view.hideLoading();
-//            }
-//
-//        },userName);
-//
-//        disposables.add(disposable);
-//
-//    }
-//
-//    @Override
-//    public void setView(UserDetailView view) {
-//        this.view = view;
-//    }
-//}
 
 public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializable> implements UserDetailPresenterContract {
 
@@ -94,6 +43,18 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
         }
     }
 
+    @Override
+    public void onUserAdded() {
+        mView.showSnackbar("User Added to Database");
+    }
+
+
+    @Override
+    public void onUserRemoved() {
+        mView.showSnackbar("User Removed from Database");
+    }
+
+
 
     @Override
     public void setView(UserDetailView view) {
@@ -101,24 +62,32 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
     }
 
     @Override
-    public void insertToFav(FavUser user) {
-        long ids = dataManager.getDao().insertFavoriteUsers(user);
-        mView.showSnackbar("User added to Database");
+    public void insertToFav(long id, String name, String image) {
+        dataManager.addFavUser(this, id, name, image);
     }
 
     @Override
     public void removeFromFav(long id) {
-        FavUser favUser = dataManager.getDao().findUser(id);
-
-        dataManager.getDao().deleteFavUsers(favUser);
-        mView.showSnackbar("User remove from Database");
+//        FavUser favUser = (FavUser) dataManager.findFavUser(this, id);
+        dataManager.deleteFavUser(this, id);
     }
+
+//    @Override
+//    public FavUser checkUser(long id) {
+//        return dataManager.getDao().findUser(id);
+////        Disposable disposable = dataManager.findFavUser(this, id);
+////        mDisposables.add(disposable);
+//    }
+
 
     @Override
-    public FavUser checkUser(long id) {
-        return dataManager.getDao().findUser(id);
-//        Disposable disposable = dataManager.findFavUser(this, id);
-//        mDisposables.add(disposable);
+    public void onUserFound(Serializable data) {
+        mView.checkUserInDb(data);
     }
 
+
+    @Override
+    public void checkUser(long id) {
+        dataManager.findFavUser(this, id);
+    }
 }

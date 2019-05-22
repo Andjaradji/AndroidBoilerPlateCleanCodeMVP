@@ -15,8 +15,9 @@ public class FavUser implements Serializable {
     private long userId;
 
 
-    public FavUser() {
-    }
+//    public FavUser() {
+//
+//    }
 
     public String getName() {
         return name;
@@ -47,10 +48,11 @@ public class FavUser implements Serializable {
     }
 
 
-    //    public FavUser(String name, String image) {
-//        this.name = name;
-//        this.image = image;
-//    }
+    public FavUser(long id, String name, String image) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+    }
 
     public void setUserId(long userId) {
         this.userId = userId;

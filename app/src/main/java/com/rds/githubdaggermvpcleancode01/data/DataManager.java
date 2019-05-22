@@ -2,7 +2,6 @@ package com.rds.githubdaggermvpcleancode01.data;
 
 import com.rds.githubdaggermvpcleancode01.callback.RequestCallback;
 import com.rds.githubdaggermvpcleancode01.data.db.AppDatabase;
-import com.rds.githubdaggermvpcleancode01.data.db.dao.FavoriteDao;
 import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
 import com.rds.githubdaggermvpcleancode01.data.network.AuthService;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkError;
@@ -17,10 +16,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.Observer;
-import io.reactivex.SingleObserver;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class DataManager {
@@ -28,14 +31,13 @@ public class DataManager {
     private final AuthService mAuthService;
     private final AppDatabase mAppDatabase;
     private Disposable disposable;
-    private List<GithubUser> githubUserList;
-    private List<FavUser> favUserList;
     private GithubUser user;
     private LoginResponse mResponse;
 
     private Serializable dataSerializable;
-    private Serializable databaseSerializable;
-    private List<Serializable> listDataSerializable;
+    //    private Serializable databaseSerializable;
+//    private List<Serializable> listDataSerializable;
+    private Single<FavUser> dmFavUser;
 
     @Inject
     public DataManager(NetworkService networkService, AuthService authService, AppDatabase appDatabase) {
@@ -132,48 +134,31 @@ public class DataManager {
         return disposable;
     }
 
-    public FavoriteDao getDao() {
-        return mAppDatabase.userFavoriteModel();
-    }
-
-    public Disposable getAllFavoriteUsers(final RequestCallback<Serializable> callback) {
+    public void getAllFavoriteUsers(final RequestCallback<Serializable> callback) {
         mAppDatabase.userFavoriteModel().findAllFavoriteUsers()
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<FavUser>>() {
+                .subscribe(new Consumer<List<FavUser>>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
-
-                    @Override
-                    public void onSuccess(List<FavUser> userList) {
+                    public void accept(List<FavUser> userList) throws Exception {
                         dataSerializable = new ArrayList<>(userList);
                         callback.onRequestSuccess(dataSerializable);
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        callback.onRequestError(new NetworkError(e));
-                    }
                 });
-
-        return disposable;
     }
 
-//    public Disposable findFavUser(final RequestCallback<Serializable> callback, long id){
-//        mAppDatabase.userFavoriteModel().findUser(id)
+//    public Disposable getAllFavoriteUsers(final RequestCallback<Serializable> callback) {
+//        mAppDatabase.userFavoriteModel().findAllFavoriteUsers()
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new SingleObserver<FavUser>() {
+//                .subscribe(new SingleObserver<List<FavUser>>() {
 //                    @Override
 //                    public void onSubscribe(Disposable d) {
 //                        disposable = d;
 //                    }
 //
 //                    @Override
-//                    public void onSuccess(FavUser user) {
-//                        dataSerializable = user;
+//                    public void onSuccess(List<FavUser> userList) {
+//                        dataSerializable = new ArrayList<>(userList);
 //                        callback.onRequestSuccess(dataSerializable);
 //                    }
 //
@@ -184,6 +169,117 @@ public class DataManager {
 //                });
 //
 //        return disposable;
+//    }
+
+    public void addFavUser(final RequestCallback<Serializable> callback, final long favUserId, final String favUserName, final String favUserImageUrl) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                FavUser favUser = new FavUser(favUserId, favUserName, favUserImageUrl);
+                mAppDatabase.userFavoriteModel().insertFavoriteUsers(favUser);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.onUserAdded();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onRequestError(new NetworkError(e));
+                    }
+                });
+    }
+
+    public void deleteFavUser(final RequestCallback<Serializable> callback, final long id) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                FavUser favUser = mAppDatabase.userFavoriteModel().findUser(id);
+                mAppDatabase.userFavoriteModel().deleteUser(favUser);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.onUserRemoved();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onRequestError(new NetworkError(e));
+                    }
+                });
+    }
+
+
+    public void findFavUser(final RequestCallback<Serializable> callback, final long id) {
+        final FavUser[] favUser = new FavUser[1];
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                favUser[0] = mAppDatabase.userFavoriteModel().findUser(id);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.onUserFound(favUser[0]);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onRequestError(new NetworkError(e));
+                    }
+                });
+    }
+
+//    public void findFavUser(final RequestCallback<Serializable> callback, final long id){
+//        Completable.fromAction(new Action() {
+//            @Override
+//            public void run() throws Exception {
+//                mAppDatabase.userFavoriteModel().findUser(id);
+//            }
+//        })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new CompletableObserver() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        disposable = d;
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        callback.onUserFound(id);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        callback.onRequestError(new NetworkError(e));
+//                    }
+//                });
 //    }
 
 

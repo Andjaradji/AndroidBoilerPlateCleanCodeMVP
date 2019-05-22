@@ -6,8 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.rds.githubdaggermvpcleancode01.data.DataManager;
 import com.rds.githubdaggermvpcleancode01.di.ActivityContext;
-import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritePresenter;
 import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesAdapter;
+import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesPresenter;
 import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesPresenterContract;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomeAdapter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenter;
@@ -57,7 +57,7 @@ public class ActivityModule {
 
     @Provides
     FavoritesPresenterContract provideFavoritePresenter(DataManager dataManager) {
-        return new FavoritePresenter(dataManager);
+        return new FavoritesPresenter(dataManager);
     }
 
 

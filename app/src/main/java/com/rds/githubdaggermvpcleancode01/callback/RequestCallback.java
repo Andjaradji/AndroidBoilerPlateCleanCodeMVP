@@ -7,5 +7,10 @@ public interface RequestCallback<T> {
 
     void onRequestError(NetworkError networkError);
 
+    void onUserAdded();
+
+    void onUserRemoved();
+
+    void onUserFound(T t);
 
 }
