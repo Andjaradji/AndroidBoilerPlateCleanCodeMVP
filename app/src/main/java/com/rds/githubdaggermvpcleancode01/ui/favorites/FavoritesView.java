@@ -8,4 +8,5 @@ import java.io.Serializable;
 
 public interface FavoritesView extends BaseView {
     void handleResult(Serializable favUserList);
+
 }

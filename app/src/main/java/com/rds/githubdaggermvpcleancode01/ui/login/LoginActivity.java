@@ -1,15 +1,20 @@
 package com.rds.githubdaggermvpcleancode01.ui.login;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginCredentials;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.ui.register.RegisterActivity;
 
 import javax.inject.Inject;
 
@@ -17,6 +22,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     TextInputEditText etEmail;
     TextInputEditText etPassword;
     Button btnServerLogin;
+    RelativeLayout layoutRegister;
 
     TextView tvLoginTitle;
 
@@ -43,8 +49,10 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         etPassword = findViewById(R.id.et_password);
         btnServerLogin = findViewById(R.id.btn_server_login);
         tvLoginTitle = findViewById(R.id.tv_login_title);
+        layoutRegister = findViewById(R.id.app_register_layout);
 
         btnServerLogin.setOnClickListener(this);
+        layoutRegister.setOnClickListener(this);
     }
 
 
@@ -55,6 +63,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
                 serverLogin();
                 break;
             case R.id.app_register_layout:
+                launchRegister();
                 break;
         }
 
@@ -64,13 +73,14 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         mUserCredentials = new LoginCredentials();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-//        mUserCredentials.setTitle("foo");
-//        mUserCredentials.setBody("bar");
-//        mUserCredentials.setId(1);
         mUserCredentials.setPassword(password);
         mUserCredentials.setEmail(email);
         loginPresenter.sendAppUserCredentials(mUserCredentials);
-//            loginPresenter.sendAppUserCredentials("foo","bar",1);
+    }
+
+    private void launchRegister() {
+        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(registerIntent);
     }
 
     @Override
@@ -85,30 +95,17 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
 
     @Override
     public void onFailure(String appErrorMessage) {
-        tvLoginTitle.setText(appErrorMessage);
+        Snackbar.make(btnServerLogin, appErrorMessage, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void handleResult(LoginResponse response) {
-//                try {
-//            Log.d("Handle Result", body.get("message").toString());
-//        } catch (JSONException e) {
-//            Log.d("Handle Result", e.getMessage());
-//        }
-//        try {
-//            String title = body.getString("message");
-//            tvLoginTitle.setText(title);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
         mLoginResponse = response;
-
-        tvLoginTitle.setText(mLoginResponse.toString());
-
-//        Log.d("Coba Aja",mLoginResponse.getMessage());
-
+        if (response.getMessage().equals("Login successful")) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("email", mLoginResponse.getMessage());
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
     }
-
-
 }

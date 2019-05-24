@@ -5,6 +5,7 @@ import android.content.Context;
 import com.rds.githubdaggermvpcleancode01.BuildConfig;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginCredentials;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
+import com.rds.githubdaggermvpcleancode01.data.network.model.RegisterResponse;
 
 import java.io.IOException;
 
@@ -17,6 +18,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface AuthService {
@@ -26,8 +29,9 @@ public interface AuthService {
 @POST("/user/login")
     Observable<LoginResponse> goLogin(@Body LoginCredentials credentials);
 
-//    @POST("/posts")
-//    Observable<LoginResponse> goLogin(@Body LoginCredentials credentials);
+    @POST("/user/register")
+    @FormUrlEncoded
+    Observable<RegisterResponse> doRegister(@Field("name") String name, @Field("email") String email, @Field("password") String password);
 
     class Factory {
         public static AuthService makeLoginService(Context context) {

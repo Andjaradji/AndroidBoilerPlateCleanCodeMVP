@@ -9,6 +9,7 @@ import com.rds.githubdaggermvpcleancode01.data.network.NetworkService;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginCredentials;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
+import com.rds.githubdaggermvpcleancode01.data.network.model.RegisterResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class DataManager {
     private Disposable disposable;
     private GithubUser user;
     private LoginResponse mResponse;
+    private RegisterResponse mRegResponse;
 
     private Serializable dataSerializable;
     //    private Serializable databaseSerializable;
@@ -128,9 +130,39 @@ public class DataManager {
 
                     @Override
                     public void onComplete() {
+//                        LoginResponse response = (LoginResponse) mResponse;
                         callback.onRequestSuccess(mResponse);
                     }
                 });
+        return disposable;
+    }
+
+    public Disposable postRegister(final RequestCallback<RegisterResponse> callback, String name, String email, String password) {
+        mAuthService.doRegister(name, email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RegisterResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(RegisterResponse response) {
+                        mRegResponse = response;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onRequestError(new NetworkError(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.onRequestSuccess(mRegResponse);
+                    }
+                });
+
         return disposable;
     }
 
@@ -193,7 +225,7 @@ public class DataManager {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onRequestError(new NetworkError(e));
+//                        callback.onRequestDbError(new EmptyResultSetException(e.getMessage()));
                     }
                 });
     }

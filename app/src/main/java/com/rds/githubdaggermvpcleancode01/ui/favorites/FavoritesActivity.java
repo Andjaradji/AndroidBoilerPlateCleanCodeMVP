@@ -75,6 +75,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesView {
         favUserList.setAdapter(favoritesAdapter);
     }
 
+
     @Override
     public void showLoading() {
         progressBar.setVisibility(View.VISIBLE);

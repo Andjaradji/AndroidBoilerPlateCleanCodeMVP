@@ -5,6 +5,7 @@ import com.rds.githubdaggermvpcleancode01.di.module.ActivityModule;
 import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesActivity;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomeActivity;
 import com.rds.githubdaggermvpcleancode01.ui.login.LoginActivity;
+import com.rds.githubdaggermvpcleancode01.ui.register.RegisterActivity;
 import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailActivity;
 
 import dagger.Component;
@@ -20,4 +21,6 @@ public interface ActivityComponent {
     void inject(LoginActivity loginActivity);
 
     void inject(FavoritesActivity favoritesActivity);
+
+    void inject(RegisterActivity registerActivity);
 }

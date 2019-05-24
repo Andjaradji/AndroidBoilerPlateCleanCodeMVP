@@ -2,6 +2,8 @@ package com.rds.githubdaggermvpcleancode01.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -27,6 +29,8 @@ import javax.inject.Inject;
 public class HomeActivity extends BaseActivity implements HomeView {
     private RecyclerView githubUserList;
 
+    private static final int REQUEST_CODE = 111;
+
     ProgressBar progressBar;
 
     @Inject
@@ -45,7 +49,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
     protected void onCreate(Bundle savedInstanceState) {
         activityComponent().inject(this);
         super.onCreate(savedInstanceState);
-//        launchLogin();
+        launchLogin();
         renderView();
         init();
 
@@ -82,8 +86,8 @@ public class HomeActivity extends BaseActivity implements HomeView {
     }
 
     private void launchLogin() {
-        Intent loginIntent = new Intent(this, LoginActivity.class);
-        startActivity(loginIntent);
+        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivityForResult(loginIntent, REQUEST_CODE);
     }
 
     @Override
@@ -98,14 +102,12 @@ public class HomeActivity extends BaseActivity implements HomeView {
                 Toast.makeText(getApplicationContext(),user.getLogin(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HomeActivity.this, UserDetailActivity.class);
                 intent.putExtra("username", user.getLogin());
-                intent.putExtra("parent", "HomeActivity");
                 intent.putExtra("id", user.getId());
                 startActivity(intent);
             }
         };
 
         homeAdapter.setListener(listener);
-
         githubUserList.setAdapter(homeAdapter);
     }
 
@@ -115,6 +117,18 @@ public class HomeActivity extends BaseActivity implements HomeView {
         inflater.inflate(R.menu.main_menu, menu);
         menuItem = menu;
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra("email");
+                Snackbar.make(progressBar, result, Snackbar.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

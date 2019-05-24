@@ -14,6 +14,8 @@ import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenterContract;
 import com.rds.githubdaggermvpcleancode01.ui.login.LoginPresenter;
 import com.rds.githubdaggermvpcleancode01.ui.login.LoginPresenterContract;
+import com.rds.githubdaggermvpcleancode01.ui.register.RegisterPresenter;
+import com.rds.githubdaggermvpcleancode01.ui.register.RegisterPresenterContract;
 import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailPresenter;
 import com.rds.githubdaggermvpcleancode01.ui.user_detail.UserDetailPresenterContract;
 
@@ -58,6 +60,11 @@ public class ActivityModule {
     @Provides
     FavoritesPresenterContract provideFavoritePresenter(DataManager dataManager) {
         return new FavoritesPresenter(dataManager);
+    }
+
+    @Provides
+    RegisterPresenterContract provideRegisterPresenter(DataManager dataManager) {
+        return new RegisterPresenter(dataManager);
     }
 
 

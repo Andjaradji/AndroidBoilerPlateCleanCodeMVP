@@ -36,6 +36,7 @@ public class FavoritesPresenter extends BasePresenter<FavoritesView, Serializabl
 //        mDisposables.add(disposable);
     }
 
+
     @Override
     public void setView(FavoritesView view) {
         this.mView = view;

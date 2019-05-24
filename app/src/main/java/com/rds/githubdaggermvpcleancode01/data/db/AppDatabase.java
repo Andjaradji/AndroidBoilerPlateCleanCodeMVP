@@ -9,7 +9,7 @@ import android.content.Context;
 import com.rds.githubdaggermvpcleancode01.data.db.dao.FavoriteDao;
 import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
 
-@Database(entities = {FavUser.class}, version = 1, exportSchema = false)
+@Database(entities = {FavUser.class}, version = 1, exportSchema = true)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 

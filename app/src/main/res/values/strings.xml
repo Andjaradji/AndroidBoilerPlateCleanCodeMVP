@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">GithubDaggerMVPCleanCode01</string>
+    <string name="app_name">MVP clean code</string>
     <string name="app_login">App Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="text_register">Didn\'t have an account? register now</string>
+    <string name="register_page">Register Page</string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
 </resources>
