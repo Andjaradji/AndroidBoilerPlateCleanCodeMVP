@@ -69,7 +69,12 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     private void serverLogin() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        loginPresenter.sendAppUserCredentials(email, password);
+        if (validateEmpty(email, password)) {
+            loginPresenter.sendAppUserCredentials(email, password);
+        } else {
+            Snackbar.make(btnServerLogin, "Field(s) can not be empty", Snackbar.LENGTH_LONG).show();
+        }
+
     }
 
     private void launchRegister() {
@@ -102,4 +107,15 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
             finish();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    private boolean validateEmpty(String email, String password) {
+        return !email.isEmpty() && !password.isEmpty();
+    }
+
+
 }

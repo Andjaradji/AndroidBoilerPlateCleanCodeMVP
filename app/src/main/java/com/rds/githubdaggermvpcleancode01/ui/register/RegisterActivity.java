@@ -19,6 +19,8 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
 
     Button btnRegister;
 
+    boolean isValidate = false;
+
     @Inject
     RegisterPresenterContract registerPresenter;
 
@@ -60,7 +62,12 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        registerPresenter.registerUser(name, email, password);
+        isValidate = validateEmpty(name, email, password);
+        if (isValidate) {
+            registerPresenter.registerUser(name, email, password);
+        } else {
+            Snackbar.make(btnRegister, "Field(s) can not be empty", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -84,4 +91,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
     public void onFailure(String appErrorMessage) {
         Snackbar.make(btnRegister, appErrorMessage, Snackbar.LENGTH_LONG).show();
     }
+
+    private boolean validateEmpty(String name, String email, String password) {
+        return !name.isEmpty() && !email.isEmpty() && !password.isEmpty();
+    }
+
+
 }
