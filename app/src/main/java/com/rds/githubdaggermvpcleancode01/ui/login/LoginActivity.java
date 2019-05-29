@@ -14,6 +14,7 @@ import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
 import com.rds.githubdaggermvpcleancode01.ui.register.RegisterActivity;
+import com.rds.githubdaggermvpcleancode01.utils.UserValidationUtil;
 
 import javax.inject.Inject;
 
@@ -69,8 +70,14 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     private void serverLogin() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        if (validateEmpty(email, password)) {
-            loginPresenter.sendAppUserCredentials(email, password);
+        if (UserValidationUtil.validateEmpty(email, password)) {
+            if (!UserValidationUtil.validateEmail(email)) {
+                Snackbar.make(btnServerLogin, "Format email is not correct", Snackbar.LENGTH_LONG).show();
+            } else if (!UserValidationUtil.validatePassword(password)) {
+                Snackbar.make(btnServerLogin, "Password must at least 6 character long", Snackbar.LENGTH_LONG).show();
+            } else {
+                loginPresenter.sendAppUserCredentials(email, password);
+            }
         } else {
             Snackbar.make(btnServerLogin, "Field(s) can not be empty", Snackbar.LENGTH_LONG).show();
         }
@@ -112,10 +119,5 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     public void onBackPressed() {
         moveTaskToBack(true);
     }
-
-    private boolean validateEmpty(String email, String password) {
-        return !email.isEmpty() && !password.isEmpty();
-    }
-
 
 }

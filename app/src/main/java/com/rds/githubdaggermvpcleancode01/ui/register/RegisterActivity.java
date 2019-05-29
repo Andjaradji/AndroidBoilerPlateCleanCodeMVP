@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.RegisterResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.utils.UserValidationUtil;
 
 import javax.inject.Inject;
 
@@ -18,8 +19,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
     TextInputEditText etPassword;
 
     Button btnRegister;
-
-    boolean isValidate = false;
 
     @Inject
     RegisterPresenterContract registerPresenter;
@@ -62,9 +61,14 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        isValidate = validateEmpty(name, email, password);
-        if (isValidate) {
-            registerPresenter.registerUser(name, email, password);
+        if (UserValidationUtil.validateEmpty(name, email, password)) {
+            if (!UserValidationUtil.validateEmail(email)) {
+                Snackbar.make(btnRegister, "Format email is not correct", Snackbar.LENGTH_LONG).show();
+            } else if (!UserValidationUtil.validatePassword(password)) {
+                Snackbar.make(btnRegister, "Password must at least 6 character long", Snackbar.LENGTH_LONG).show();
+            } else {
+                registerPresenter.registerUser(name, email, password);
+            }
         } else {
             Snackbar.make(btnRegister, "Field(s) can not be empty", Snackbar.LENGTH_LONG).show();
         }
@@ -92,9 +96,9 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
         Snackbar.make(btnRegister, appErrorMessage, Snackbar.LENGTH_LONG).show();
     }
 
-    private boolean validateEmpty(String name, String email, String password) {
-        return !name.isEmpty() && !email.isEmpty() && !password.isEmpty();
-    }
+//    private boolean validateEmpty(String name, String email, String password) {
+//        return !name.isEmpty() && !email.isEmpty() && !password.isEmpty();
+//    }
 
 
 }
