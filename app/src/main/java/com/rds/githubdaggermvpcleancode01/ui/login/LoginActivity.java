@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.rds.githubdaggermvpcleancode01.ConstantGroup;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
@@ -72,14 +73,14 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         String password = etPassword.getText().toString().trim();
         if (UserValidationUtil.validateEmpty(email, password)) {
             if (!UserValidationUtil.validateEmail(email)) {
-                Snackbar.make(btnServerLogin, "Format email is not correct", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(btnServerLogin, ConstantGroup.INCORRECT_EMAIL_FORMAT, Snackbar.LENGTH_LONG).show();
             } else if (!UserValidationUtil.validatePassword(password)) {
-                Snackbar.make(btnServerLogin, "Password must at least 6 character long", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(btnServerLogin, ConstantGroup.INCORRECT_PASSWORD_FORMAT, Snackbar.LENGTH_LONG).show();
             } else {
                 loginPresenter.sendAppUserCredentials(email, password);
             }
         } else {
-            Snackbar.make(btnServerLogin, "Field(s) can not be empty", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(btnServerLogin, ConstantGroup.WARNING_EMPTY_FIELDS, Snackbar.LENGTH_LONG).show();
         }
 
     }

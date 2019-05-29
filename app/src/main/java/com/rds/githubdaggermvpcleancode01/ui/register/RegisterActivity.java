@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.Button;
 
+import com.rds.githubdaggermvpcleancode01.ConstantGroup;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.RegisterResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
@@ -63,21 +64,21 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
         String password = etPassword.getText().toString().trim();
         if (UserValidationUtil.validateEmpty(name, email, password)) {
             if (!UserValidationUtil.validateEmail(email)) {
-                Snackbar.make(btnRegister, "Format email is not correct", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(btnRegister, ConstantGroup.INCORRECT_EMAIL_FORMAT, Snackbar.LENGTH_LONG).show();
             } else if (!UserValidationUtil.validatePassword(password)) {
-                Snackbar.make(btnRegister, "Password must at least 6 character long", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(btnRegister, ConstantGroup.INCORRECT_PASSWORD_FORMAT, Snackbar.LENGTH_LONG).show();
             } else {
                 registerPresenter.registerUser(name, email, password);
             }
         } else {
-            Snackbar.make(btnRegister, "Field(s) can not be empty", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(btnRegister, ConstantGroup.WARNING_EMPTY_FIELDS, Snackbar.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void handleResult(RegisterResponse response) {
         mRegisterResponse = response;
-        Snackbar.make(btnRegister, mRegisterResponse.getName() + "has successfully registered", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(btnRegister, mRegisterResponse.getName() + ConstantGroup.SUCCESSFUL_REGISTRATION, Snackbar.LENGTH_LONG).show();
         finish();
     }
 
