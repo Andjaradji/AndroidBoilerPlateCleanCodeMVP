@@ -20,7 +20,6 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
-//            buildConfigField "String", "LOGIN_BASE_URL", "\"http://jsonplaceholder.typicode.com/\""
             buildConfigField "String", "LOGIN_BASE_URL", "\"http://api.acite.net:3000/\""
 
 

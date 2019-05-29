@@ -7,8 +7,6 @@ import java.io.Serializable;
 public interface UserDetailView extends BaseView {
     void handleResult(Serializable githubUser);
 
-//    void checkDb(Serializable favUser);
-
     void showSnackbar(String message);
 
     void checkUserInDb(Serializable data);

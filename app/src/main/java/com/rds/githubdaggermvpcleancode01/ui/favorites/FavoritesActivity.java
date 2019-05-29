@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
@@ -62,7 +61,7 @@ public class FavoritesActivity extends BaseActivity implements FavoritesView {
             @Override
             public void onClick(int position) {
                 FavUser userFav = favoritesAdapter.getFavUserList().get(position);
-                Toast.makeText(getApplicationContext(), userFav.getName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), userFav.getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FavoritesActivity.this, UserDetailActivity.class);
                 intent.putExtra("username", userFav.getName());
                 intent.putExtra("parent", "FavoritesActivity");

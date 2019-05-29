@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.rds.githubdaggermvpcleancode01.R;
+import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
 
@@ -34,6 +35,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
     private long userId;
     private String favUserName;
     private String favUserImageUrl;
+    private String userName;
 
 
     @Override
@@ -44,21 +46,19 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
         renderView();
 
         Bundle extras = getIntent().getExtras();
-        String userName = extras.getString("username");
+        userName = extras.getString("username");
 
         userId = extras.getLong("id");
 
         userDetailPresenter.setView(this);
-        userDetailPresenter.getUserDetail(userName);
         userDetailPresenter.checkUser(userId);
-
     }
 
     private void renderView() {
         setContentView(R.layout.activity_user_detail);
         imgUserProfile = findViewById(R.id.iv_user_big_pic);
         txtUserNameProfile = findViewById(R.id.tv_username_detail);
-        progressBar = findViewById(R.id.progressbar);
+        progressBar = findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -122,6 +122,17 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
     @Override
     public void checkUserInDb(Serializable data) {
         isFavorite = data != null;
+        if (!isFavorite) {
+            userDetailPresenter.getApiUserDetail(userName);
+        } else {
+            FavUser user = (FavUser) data;
+            favUserName = user.getName() + " Taken from db";
+            favUserImageUrl = user.getImage();
+            userId = user.getId();
+
+            txtUserNameProfile.setText(favUserName);
+            Glide.with(this).load(favUserImageUrl).into(imgUserProfile);
+        }
     }
 
     private void setIsFavorite() {

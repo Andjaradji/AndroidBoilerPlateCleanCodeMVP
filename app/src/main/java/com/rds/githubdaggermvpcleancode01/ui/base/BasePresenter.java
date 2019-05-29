@@ -17,6 +17,20 @@ public class BasePresenter<T extends BaseView, V> implements BasePresenterContra
         this.mDataManager = dataManager;
     }
 
+    @Override
+    public void beforeRequest() {
+        if (mView != null) {
+            mView.showLoading();
+        }
+
+    }
+
+    @Override
+    public void afterRequest() {
+        if (mView != null) {
+            mView.hideLoading();
+        }
+    }
 
     @Override
     public void onRequestSuccess(V v) {
@@ -25,10 +39,6 @@ public class BasePresenter<T extends BaseView, V> implements BasePresenterContra
 
     @Override
     public void onRequestError(NetworkError networkError) {
-
-        if (mView != null) {
-            mView.hideLoading();
-        }
 
     }
 
@@ -46,7 +56,6 @@ public class BasePresenter<T extends BaseView, V> implements BasePresenterContra
     public void onUserFound(V v) {
 
     }
-
 
     @Override
     public void onResume() {

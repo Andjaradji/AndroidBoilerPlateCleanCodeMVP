@@ -49,6 +49,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
     protected void onCreate(Bundle savedInstanceState) {
         activityComponent().inject(this);
         super.onCreate(savedInstanceState);
+
         launchLogin();
         renderView();
         init();
@@ -56,8 +57,8 @@ public class HomeActivity extends BaseActivity implements HomeView {
         homePresenter.setView(this);
         homePresenter.getUserList();
 
-
     }
+
 
     private void renderView(){
         setContentView(R.layout.activity_home);

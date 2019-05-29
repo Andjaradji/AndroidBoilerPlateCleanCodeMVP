@@ -2,7 +2,6 @@ package com.rds.githubdaggermvpcleancode01.ui.login;
 
 import com.rds.githubdaggermvpcleancode01.data.DataManager;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkError;
-import com.rds.githubdaggermvpcleancode01.data.network.model.LoginCredentials;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BasePresenter;
 
@@ -19,8 +18,8 @@ public class LoginPresenter extends BasePresenter<LoginView, LoginResponse> impl
     }
 
     @Override
-    public void sendAppUserCredentials(LoginCredentials credentials) {
-        Disposable d = dataManager.postLogin(this, credentials);
+    public void sendAppUserCredentials(String email, String password) {
+        Disposable d = dataManager.postLogin(this, email, password);
         mDisposables.add(d);
     }
 

@@ -18,19 +18,23 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
         this.dataManager = mDataManager;
     }
 
+    @Override
+    public void beforeRequest() {
+        mView.showLoading();
+    }
 
     @Override
-    public void getUserDetail(String userName) {
-        Disposable disposable = dataManager.getUserDetail(this, userName);
+    public void getApiUserDetail(String userName) {
+        Disposable disposable = dataManager.getUserDetailFromApi(this, userName);
         mDisposables.add(disposable);
     }
+
 
     @Override
     public void onRequestSuccess(Serializable data) {
         super.onRequestSuccess(data);
         if (mView != null) {
             mView.handleResult(data);
-            mView.hideLoading();
         }
     }
 
@@ -39,7 +43,6 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
         super.onRequestError(networkError);
         if (mView != null) {
             mView.onFailure(networkError.getAppErrorMessage());
-            mView.hideLoading();
         }
     }
 
@@ -71,13 +74,6 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
 //        FavUser favUser = (FavUser) dataManager.findFavUser(this, id);
         dataManager.deleteFavUser(this, id);
     }
-
-//    @Override
-//    public FavUser checkUser(long id) {
-//        return dataManager.getDao().findUser(id);
-////        Disposable disposable = dataManager.findFavUser(this, id);
-////        mDisposables.add(disposable);
-//    }
 
 
     @Override

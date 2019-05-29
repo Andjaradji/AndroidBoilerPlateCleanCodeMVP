@@ -3,7 +3,6 @@ package com.rds.githubdaggermvpcleancode01.data.network;
 import android.content.Context;
 
 import com.rds.githubdaggermvpcleancode01.BuildConfig;
-import com.rds.githubdaggermvpcleancode01.data.network.model.LoginCredentials;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.data.network.model.RegisterResponse;
 
@@ -17,7 +16,6 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -27,7 +25,8 @@ public interface AuthService {
 //    @FormUrlEncoded
 //    Observable<LoginResponse> goLogin (@Field("title") String title, @Field("body") String body, @Field("userId") long userId);
 @POST("/user/login")
-    Observable<LoginResponse> goLogin(@Body LoginCredentials credentials);
+@FormUrlEncoded
+Observable<LoginResponse> goLogin(@Field("email") String email, @Field("password") String password);
 
     @POST("/user/register")
     @FormUrlEncoded

@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rds.githubdaggermvpcleancode01.R;
-import com.rds.githubdaggermvpcleancode01.data.network.model.LoginCredentials;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
 import com.rds.githubdaggermvpcleancode01.ui.register.RegisterActivity;
@@ -25,8 +24,6 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     RelativeLayout layoutRegister;
 
     TextView tvLoginTitle;
-
-    LoginCredentials mUserCredentials;
 
     @Inject
     LoginPresenterContract loginPresenter;
@@ -70,12 +67,9 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     }
 
     private void serverLogin() {
-        mUserCredentials = new LoginCredentials();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        mUserCredentials.setPassword(password);
-        mUserCredentials.setEmail(email);
-        loginPresenter.sendAppUserCredentials(mUserCredentials);
+        loginPresenter.sendAppUserCredentials(email, password);
     }
 
     private void launchRegister() {
