@@ -23,15 +23,15 @@ public class NetworkError extends Throwable {
         this.error = e;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return error.getMessage();
     }
 
-    public Boolean isAuthFailure(){
+    public Boolean isAuthFailure() {
         return error instanceof HttpException && ((HttpException) error).code() == HTTP_UNAUTHORIZED;
     }
 
-    public Boolean isResponseNull(){
+    public Boolean isResponseNull() {
         return error instanceof HttpException && ((HttpException) error).response() == null;
     }
 
@@ -60,7 +60,6 @@ public class NetworkError extends Throwable {
             return null;
         }
     }
-
 
 
 }

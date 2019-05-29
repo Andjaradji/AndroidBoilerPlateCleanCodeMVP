@@ -15,7 +15,7 @@ import com.rds.githubdaggermvpcleancode01.utils.OnItemClickListener;
 
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>  {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     protected OnItemClickListener listener;
     private List<GithubUser> userList;
     private Context context;
@@ -44,7 +44,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>  {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -60,7 +60,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>  {
 
     @Override
     public int getItemCount() {
-        return userList == null? 0: userList.size();
+        return userList == null ? 0 : userList.size();
     }
 
 

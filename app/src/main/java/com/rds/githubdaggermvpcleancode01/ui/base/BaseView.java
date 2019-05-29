@@ -6,6 +6,4 @@ public interface BaseView {
     void hideLoading();
 
     void onFailure(String appErrorMessage);
-
-//    boolean isNetworkConnected();
 }

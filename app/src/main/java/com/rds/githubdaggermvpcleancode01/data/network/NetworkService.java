@@ -22,13 +22,13 @@ import retrofit2.http.Query;
 
 public interface NetworkService {
     @GET("/users")
-    Observable<List<GithubUser>> getUsers(@Query("per_page")int perPage, @Query("page") int page);
+    Observable<List<GithubUser>> getUsers(@Query("per_page") int perPage, @Query("page") int page);
 
     @GET("/users/{user_name}")
     Observable<GithubUser> getUserDetail(@Path("user_name") String userName);
 
     class Factory {
-        public static NetworkService makeNetworkService (Context context){
+        public static NetworkService makeNetworkService(Context context) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(new Interceptor() {
                         @Override

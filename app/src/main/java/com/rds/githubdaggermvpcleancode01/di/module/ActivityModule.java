@@ -42,7 +42,7 @@ public class ActivityModule {
     }
 
     @Provides
-    HomePresenterContract provideHomePresenter(DataManager dataManager){
+    HomePresenterContract provideHomePresenter(DataManager dataManager) {
         return new HomePresenter(dataManager);
     }
 

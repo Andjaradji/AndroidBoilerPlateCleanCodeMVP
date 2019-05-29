@@ -21,12 +21,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface AuthService {
-//    @POST("/posts")
-//    @FormUrlEncoded
-//    Observable<LoginResponse> goLogin (@Field("title") String title, @Field("body") String body, @Field("userId") long userId);
-@POST("/user/login")
-@FormUrlEncoded
-Observable<LoginResponse> goLogin(@Field("email") String email, @Field("password") String password);
+    @POST("/user/login")
+    @FormUrlEncoded
+    Observable<LoginResponse> goLogin(@Field("email") String email, @Field("password") String password);
 
     @POST("/user/register")
     @FormUrlEncoded

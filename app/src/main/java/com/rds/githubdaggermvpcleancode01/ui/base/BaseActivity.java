@@ -13,8 +13,8 @@ public abstract class BaseActivity<T extends BasePresenterContract> extends AppC
 
     private ActivityComponent mActivityComponent;
 
-    public ActivityComponent activityComponent(){
-        if (mActivityComponent == null){
+    public ActivityComponent activityComponent() {
+        if (mActivityComponent == null) {
             mActivityComponent = DaggerActivityComponent.builder()
                     .activityModule(new ActivityModule(this))
                     .applicationComponent(BaseApp.get(this).getComponent())
@@ -25,7 +25,7 @@ public abstract class BaseActivity<T extends BasePresenterContract> extends AppC
     }
 
 
-    protected ApplicationComponent applicationComponent(){
+    protected ApplicationComponent applicationComponent() {
         return BaseApp.get(this).getComponent();
     }
 

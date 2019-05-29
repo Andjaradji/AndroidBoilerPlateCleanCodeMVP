@@ -22,19 +22,19 @@ public class ApplicationModule {
     }
 
     @Provides
-    Application provideApplication (){
+    Application provideApplication() {
         return mApplication;
     }
 
     @Provides
     @ApplicationContext
-    Context provideContext(){
+    Context provideContext() {
         return mApplication;
     }
 
     @Provides
     @Singleton
-    NetworkService provideNetworkService(){
+    NetworkService provideNetworkService() {
         return NetworkService.Factory.makeNetworkService(mApplication);
     }
 

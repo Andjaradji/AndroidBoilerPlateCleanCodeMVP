@@ -22,13 +22,13 @@ public class BaseApp extends Application {
         mApplicationComponent.inject(this);
     }
 
-    public static BaseApp get (Context context){
+    public static BaseApp get(Context context) {
 
         return (BaseApp) context.getApplicationContext();
 
     }
 
-    public ApplicationComponent getComponent(){
+    public ApplicationComponent getComponent() {
         return mApplicationComponent;
     }
 

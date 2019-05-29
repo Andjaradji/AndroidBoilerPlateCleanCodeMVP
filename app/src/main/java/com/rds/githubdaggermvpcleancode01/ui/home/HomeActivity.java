@@ -60,13 +60,13 @@ public class HomeActivity extends BaseActivity implements HomeView {
     }
 
 
-    private void renderView(){
+    private void renderView() {
         setContentView(R.layout.activity_home);
         githubUserList = findViewById(R.id.rv_home_list);
         progressBar = findViewById(R.id.progress);
     }
 
-    public void init(){
+    public void init() {
         githubUserList.setLayoutManager(linearLayoutManager);
     }
 
@@ -100,7 +100,7 @@ public class HomeActivity extends BaseActivity implements HomeView {
             @Override
             public void onClick(int position) {
                 GithubUser user = homeAdapter.getUserList().get(position);
-                Toast.makeText(getApplicationContext(),user.getLogin(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), user.getLogin(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HomeActivity.this, UserDetailActivity.class);
                 intent.putExtra("username", user.getLogin());
                 intent.putExtra("id", user.getId());
