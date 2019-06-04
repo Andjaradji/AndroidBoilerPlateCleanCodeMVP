@@ -1,15 +1,19 @@
 package com.rds.githubdaggermvpcleancode01.ui.register;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
+import com.google.firebase.auth.AuthResult;
 import com.rds.githubdaggermvpcleancode01.ConstantGroup;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.RegisterResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.ui.login.LoginActivity;
 import com.rds.githubdaggermvpcleancode01.utils.UserValidationUtil;
 
 import javax.inject.Inject;
@@ -18,6 +22,9 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
     TextInputEditText etName;
     TextInputEditText etEmail;
     TextInputEditText etPassword;
+    TextInputEditText etPhone;
+
+    ProgressBar progressBar;
 
     Button btnRegister;
 
@@ -28,10 +35,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        registerPresenter.setView(this);
+        super.onCreate(savedInstanceState);
         renderView();
+        registerPresenter.setView(this);
     }
 
 
@@ -40,7 +47,9 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
         etName = findViewById(R.id.et_reg_username);
         etEmail = findViewById(R.id.et_reg_email);
         etPassword = findViewById(R.id.et_reg_password);
+        etPhone = findViewById(R.id.et_reg_phone);
         btnRegister = findViewById(R.id.btn_server_register);
+        progressBar = findViewById(R.id.progress_register);
 
         btnRegister.setOnClickListener(this);
 
@@ -62,13 +71,16 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        if (UserValidationUtil.validateEmpty(name, email, password)) {
+        String phone = etPhone.getText().toString().trim();
+        if (UserValidationUtil.validateEmpty(name, email, password, phone)) {
             if (!UserValidationUtil.validateEmail(email)) {
                 Snackbar.make(btnRegister, ConstantGroup.INCORRECT_EMAIL_FORMAT, Snackbar.LENGTH_LONG).show();
             } else if (!UserValidationUtil.validatePassword(password)) {
                 Snackbar.make(btnRegister, ConstantGroup.INCORRECT_PASSWORD_FORMAT, Snackbar.LENGTH_LONG).show();
+            } else if (!UserValidationUtil.validatePhone(phone)) {
+                Snackbar.make(btnRegister, ConstantGroup.INCORREXT_PHONE_NUMBER_FORMAT, Snackbar.LENGTH_LONG).show();
             } else {
-                registerPresenter.registerUser(name, email, password);
+                registerPresenter.registerUser(email, password);
             }
         } else {
             Snackbar.make(btnRegister, ConstantGroup.WARNING_EMPTY_FIELDS, Snackbar.LENGTH_LONG).show();
@@ -76,30 +88,32 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
     }
 
     @Override
-    public void handleResult(RegisterResponse response) {
-        mRegisterResponse = response;
-        Snackbar.make(btnRegister, mRegisterResponse.getName() + ConstantGroup.SUCCESSFUL_REGISTRATION, Snackbar.LENGTH_LONG).show();
+    public void handleResult(AuthResult authResult) {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        intent.putExtra("email", authResult.getUser().getEmail());
+        startActivity(intent);
         finish();
     }
 
     @Override
     public void showLoading() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onFailure(String appErrorMessage) {
-        Snackbar.make(btnRegister, appErrorMessage, Snackbar.LENGTH_LONG).show();
+
     }
 
-//    private boolean validateEmpty(String name, String email, String password) {
-//        return !name.isEmpty() && !email.isEmpty() && !password.isEmpty();
-//    }
+    @Override
+    public void showSnackbar(String message) {
+        Snackbar.make(btnRegister, message, Snackbar.LENGTH_LONG).show();
+    }
 
 
 }

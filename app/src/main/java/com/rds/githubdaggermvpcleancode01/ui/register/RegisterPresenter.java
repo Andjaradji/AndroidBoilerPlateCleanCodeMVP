@@ -1,13 +1,12 @@
 package com.rds.githubdaggermvpcleancode01.ui.register;
 
+import com.google.firebase.auth.AuthResult;
 import com.rds.githubdaggermvpcleancode01.data.DataManager;
-import com.rds.githubdaggermvpcleancode01.data.network.NetworkError;
-import com.rds.githubdaggermvpcleancode01.data.network.model.RegisterResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BasePresenter;
 
 import io.reactivex.disposables.Disposable;
 
-public class RegisterPresenter extends BasePresenter<RegisterView, RegisterResponse> implements RegisterPresenterContract {
+public class RegisterPresenter extends BasePresenter<RegisterView, AuthResult> implements RegisterPresenterContract {
     private final DataManager dataManager;
 
     public RegisterPresenter(DataManager mDataManager) {
@@ -15,9 +14,10 @@ public class RegisterPresenter extends BasePresenter<RegisterView, RegisterRespo
         this.dataManager = mDataManager;
     }
 
+
     @Override
-    public void registerUser(String name, String email, String password) {
-        Disposable d = dataManager.postRegister(this, name, email, password);
+    public void registerUser(String email, String password) {
+        Disposable d = dataManager.firebaseRegister(this, email, password);
         mDisposables.add(d);
     }
 
@@ -26,18 +26,19 @@ public class RegisterPresenter extends BasePresenter<RegisterView, RegisterRespo
         this.mView = view;
     }
 
-    @Override
-    public void onRequestError(NetworkError networkError) {
-        super.onRequestError(networkError);
-        mView.onFailure(networkError.getAppErrorMessage());
-        mView.hideLoading();
-    }
 
     @Override
-    public void onRequestSuccess(RegisterResponse response) {
-        super.onRequestSuccess(response);
-        mView.handleResult(response);
-        mView.hideLoading();
-
+    public void onRequestSuccess(AuthResult authResult) {
+        super.onRequestSuccess(authResult);
+        mView.showSnackbar(authResult.getUser().getEmail() + " Registration Successful");
+        mView.handleResult(authResult);
     }
+
+
+    @Override
+    public void onFirebaseAuthError(String errorMessage) {
+        mView.showSnackbar(errorMessage);
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package com.rds.githubdaggermvpcleancode01.data;
 
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.rds.githubdaggermvpcleancode01.callback.RequestCallback;
 import com.rds.githubdaggermvpcleancode01.data.db.AppDatabase;
 import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
@@ -16,8 +18,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import durdinapps.rxfirebase2.RxFirebaseAuth;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
+import io.reactivex.MaybeObserver;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -29,6 +33,8 @@ public class DataManager {
     private final NetworkService mNetworkService;
     private final AuthService mAuthService;
     private final AppDatabase mAppDatabase;
+    private final FirebaseAuth mFirebaseAuth;
+    private final RxFirebaseAuth mRxFirebaseAuth;
     private Disposable disposable;
     private GithubUser user;
     private LoginResponse mLoginResponse;
@@ -37,10 +43,12 @@ public class DataManager {
     private Serializable dataSerializable;
 
     @Inject
-    public DataManager(NetworkService networkService, AuthService authService, AppDatabase appDatabase) {
+    public DataManager(NetworkService networkService, AuthService authService, AppDatabase appDatabase, FirebaseAuth firebaseAuth, RxFirebaseAuth rxFirebaseAuth) {
         this.mNetworkService = networkService;
         this.mAuthService = authService;
         this.mAppDatabase = appDatabase;
+        this.mFirebaseAuth = firebaseAuth;
+        this.mRxFirebaseAuth = rxFirebaseAuth;
     }
 
 
@@ -290,5 +298,70 @@ public class DataManager {
                         callback.afterRequest();
                     }
                 });
+    }
+
+    public Disposable firebaseRegister(final RequestCallback<AuthResult> callback, String email, String password) {
+
+        RxFirebaseAuth.createUserWithEmailAndPassword(mFirebaseAuth, email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MaybeObserver<AuthResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        callback.beforeRequest();
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        callback.onRequestSuccess(authResult);
+                        callback.afterRequest();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onFirebaseAuthError(e.getMessage());
+                        callback.afterRequest();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.afterRequest();
+                    }
+                });
+        return disposable;
+    }
+
+    public Disposable firebaseLogin(final RequestCallback<AuthResult> callback, String email, String password) {
+
+        RxFirebaseAuth.signInWithEmailAndPassword(mFirebaseAuth, email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MaybeObserver<AuthResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        callback.beforeRequest();
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        callback.onRequestSuccess(authResult);
+                        callback.afterRequest();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onFirebaseAuthError(e.getMessage());
+                        callback.afterRequest();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.afterRequest();
+                    }
+                });
+        return disposable;
     }
 }

@@ -3,6 +3,7 @@ package com.rds.githubdaggermvpcleancode01.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.rds.githubdaggermvpcleancode01.data.db.AppDatabase;
 import com.rds.githubdaggermvpcleancode01.data.network.AuthService;
 import com.rds.githubdaggermvpcleancode01.data.network.NetworkService;
@@ -12,6 +13,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import durdinapps.rxfirebase2.RxFirebaseAuth;
 
 @Module
 public class ApplicationModule {
@@ -49,6 +51,22 @@ public class ApplicationModule {
     AppDatabase provideAppDatabase() {
         return AppDatabase.getDatabase(mApplication);
     }
+
+
+    @Provides
+    @Singleton
+    FirebaseAuth provideFirebaseAuth() {
+        return FirebaseAuth.getInstance();
+    }
+
+    @Provides
+    @Singleton
+    RxFirebaseAuth provideRxFirebaseAuth() {
+        return new RxFirebaseAuth();
+    }
+
+
+
 
 
 }

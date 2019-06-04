@@ -20,7 +20,16 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
 
     @Override
     public void beforeRequest() {
-        mView.showLoading();
+        if (mView != null) {
+            mView.showLoading();
+        }
+    }
+
+    @Override
+    public void afterRequest() {
+        if (mView != null) {
+            mView.hideLoading();
+        }
     }
 
     @Override

@@ -43,6 +43,11 @@ public class BasePresenter<T extends BaseView, V> implements BasePresenterContra
     }
 
     @Override
+    public void onFirebaseAuthError(String errorMessage) {
+
+    }
+
+    @Override
     public void onUserAdded() {
 
     }

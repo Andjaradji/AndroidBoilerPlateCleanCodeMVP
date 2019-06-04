@@ -1,19 +1,21 @@
 package com.rds.githubdaggermvpcleancode01.ui.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.AuthResult;
 import com.rds.githubdaggermvpcleancode01.ConstantGroup;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.ui.home.HomeActivity;
 import com.rds.githubdaggermvpcleancode01.ui.register.RegisterActivity;
 import com.rds.githubdaggermvpcleancode01.utils.UserValidationUtil;
 
@@ -26,6 +28,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     RelativeLayout layoutRegister;
 
     TextView tvLoginTitle;
+    ProgressBar progressBar;
 
     @Inject
     LoginPresenterContract loginPresenter;
@@ -37,10 +40,20 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        loginPresenter.setView(this);
         renderView();
+
+        getIntentFromRegister();
+
+        loginPresenter.setView(this);
+
     }
 
+    private void getIntentFromRegister() {
+        String email = getIntent().getStringExtra("email");
+        if (email != null) {
+            Snackbar.make(btnServerLogin, email + " Successfully registered", Snackbar.LENGTH_LONG).show();
+        }
+    }
 
     private void renderView() {
         setContentView(R.layout.activity_login);
@@ -49,6 +62,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         btnServerLogin = findViewById(R.id.btn_server_login);
         tvLoginTitle = findViewById(R.id.tv_login_title);
         layoutRegister = findViewById(R.id.app_register_layout);
+        progressBar = findViewById(R.id.progress_login);
 
         btnServerLogin.setOnClickListener(this);
         layoutRegister.setOnClickListener(this);
@@ -92,12 +106,12 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
 
     @Override
     public void showLoading() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -106,14 +120,18 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     }
 
     @Override
-    public void handleResult(LoginResponse response) {
-        mLoginResponse = response;
-        if (response.getMessage().equals("Login successful")) {
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("email", mLoginResponse.getMessage());
-            setResult(Activity.RESULT_OK, returnIntent);
+    public void handleResult(AuthResult authResult) {
+
+        Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+        homeIntent.putExtra("email", authResult.getUser().getEmail());
+        startActivity(homeIntent);
             finish();
-        }
+
+    }
+
+    @Override
+    public void showSnackbar(String message) {
+        Snackbar.make(btnServerLogin, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

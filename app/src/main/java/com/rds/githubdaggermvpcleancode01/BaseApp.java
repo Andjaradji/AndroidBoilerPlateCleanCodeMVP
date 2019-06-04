@@ -15,6 +15,7 @@ public class BaseApp extends Application {
         super.onCreate();
 //        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
 
+
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();

@@ -11,6 +11,8 @@ public interface RequestCallback<T> {
 
     void onRequestError(NetworkError networkError);
 
+    void onFirebaseAuthError(String errorMessage);
+
     void onUserAdded();
 
     void onUserRemoved();

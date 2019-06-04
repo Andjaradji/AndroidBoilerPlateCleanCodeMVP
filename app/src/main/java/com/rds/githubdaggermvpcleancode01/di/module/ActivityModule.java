@@ -83,4 +83,5 @@ public class ActivityModule {
         return new LinearLayoutManager(mActivity);
     }
 
+
 }

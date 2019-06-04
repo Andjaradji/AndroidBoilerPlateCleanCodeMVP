@@ -5,5 +5,11 @@
         android:id="@+id/see_fav_db"
         android:iconifiedByDefault="false"
         android:title="Fav User"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/sign_out"
+        android:iconifiedByDefault="false"
+        android:title="Sign Out"
+        app:showAsAction="collapseActionView" />
 </menu>

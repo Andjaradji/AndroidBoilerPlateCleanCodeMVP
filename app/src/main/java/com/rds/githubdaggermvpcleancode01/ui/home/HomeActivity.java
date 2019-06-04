@@ -2,7 +2,6 @@ package com.rds.githubdaggermvpcleancode01.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
@@ -50,10 +50,11 @@ public class HomeActivity extends BaseActivity implements HomeView {
         activityComponent().inject(this);
         super.onCreate(savedInstanceState);
 
-        launchLogin();
+        String email = getIntent().getStringExtra("email");
+
         renderView();
         init();
-
+        if (email != null) Snackbar.make(progressBar, email, Snackbar.LENGTH_LONG).show();
         homePresenter.setView(this);
         homePresenter.getUserList();
 
@@ -86,10 +87,10 @@ public class HomeActivity extends BaseActivity implements HomeView {
 
     }
 
-    private void launchLogin() {
-        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivityForResult(loginIntent, REQUEST_CODE);
-    }
+//    private void launchLogin() {
+//        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+//        startActivityForResult(loginIntent, REQUEST_CODE);
+//    }
 
     @Override
     public void handleResult(Serializable githubUsers) {
@@ -120,24 +121,20 @@ public class HomeActivity extends BaseActivity implements HomeView {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("email");
-                Snackbar.make(progressBar, result, Snackbar.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.see_fav_db) {
-            Intent intent = new Intent(HomeActivity.this, FavoritesActivity.class);
-            startActivity(intent);
+        switch (item.getItemId()) {
+            case R.id.see_fav_db:
+                Intent intent = new Intent(HomeActivity.this, FavoritesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.sign_out:
+                FirebaseAuth.getInstance().signOut();
+                Intent loginIntent = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
