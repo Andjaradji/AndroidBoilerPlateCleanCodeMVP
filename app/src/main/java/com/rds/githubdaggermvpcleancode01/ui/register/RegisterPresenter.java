@@ -1,6 +1,7 @@
 package com.rds.githubdaggermvpcleancode01.ui.register;
 
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 import com.rds.githubdaggermvpcleancode01.data.DataManager;
 import com.rds.githubdaggermvpcleancode01.ui.base.BasePresenter;
 
@@ -20,6 +21,19 @@ public class RegisterPresenter extends BasePresenter<RegisterView, AuthResult> i
         Disposable d = dataManager.firebaseRegister(this, email, password);
         mDisposables.add(d);
     }
+
+    @Override
+    public void updateUser(FirebaseUser user, String username) {
+        Disposable d = dataManager.firebaseUpdateUser(this, user, username);
+        mDisposables.add(d);
+    }
+
+    @Override
+    public void emailVerification(FirebaseUser user) {
+        Disposable d = dataManager.firebaseSendEmailVerification(this, user);
+        mDisposables.add(d);
+    }
+
 
     @Override
     public void setView(RegisterView view) {

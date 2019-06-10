@@ -50,9 +50,11 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
 
     private void getIntentFromRegister() {
         String email = getIntent().getStringExtra("email");
+        String name = getIntent().getStringExtra("name");
         if (email != null) {
             Snackbar.make(btnServerLogin, email + " Successfully registered", Snackbar.LENGTH_LONG).show();
         }
+
     }
 
     private void renderView() {
@@ -122,10 +124,18 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     @Override
     public void handleResult(AuthResult authResult) {
 
-        Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
-        homeIntent.putExtra("email", authResult.getUser().getEmail());
-        startActivity(homeIntent);
+        if (authResult.getUser().isEmailVerified()) {
+            Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+            homeIntent.putExtra("email", authResult.getUser().getEmail());
+            startActivity(homeIntent);
             finish();
+
+        } else {
+
+            Snackbar.make(btnServerLogin, "Verify your email address", Snackbar.LENGTH_LONG).show();
+        }
+
+
 
     }
 

@@ -3,6 +3,7 @@ package com.rds.githubdaggermvpcleancode01.ui.user_detail;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,8 +28,10 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
     UserDetailPresenterContract userDetailPresenter;
     private ImageView imgUserProfile;
     private TextView txtUserNameProfile;
-    private ProgressBar progressBar;
+    private ProgressBar userDetailProgressBar;
     private Boolean isFavorite = false;
+
+    private Toolbar toolbar;
 
     private Menu menuItem;
 
@@ -40,8 +43,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+        super.onCreate(savedInstanceState);
+        userDetailPresenter.setView(this);
 
         renderView();
 
@@ -50,15 +54,17 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
 
         userId = extras.getLong("id");
 
-        userDetailPresenter.setView(this);
         userDetailPresenter.checkUser(userId);
+        getSupportActionBar().setTitle(userName);
     }
 
     private void renderView() {
         setContentView(R.layout.activity_user_detail);
         imgUserProfile = findViewById(R.id.iv_user_big_pic);
         txtUserNameProfile = findViewById(R.id.tv_username_detail);
-        progressBar = findViewById(R.id.progress_bar);
+        userDetailProgressBar = findViewById(R.id.progress_bar);
+        toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -89,12 +95,12 @@ public class UserDetailActivity extends BaseActivity implements UserDetailView {
 
     @Override
     public void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+        userDetailProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        progressBar.setVisibility(View.GONE);
+        userDetailProgressBar.setVisibility(View.GONE);
     }
 
     @Override

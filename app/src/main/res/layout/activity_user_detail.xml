@@ -5,23 +5,34 @@
     android:layout_height="match_parent"
     tools:context=".ui.user_detail.UserDetailActivity">
 
-    <ImageView
-        android:id="@+id/iv_user_big_pic"
-        android:layout_width="250dp"
-        android:layout_height="180dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp" />
+    <include layout="@layout/toolbar" />
 
-    <TextView
-        android:id="@+id/tv_username_detail"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_user_big_pic"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/my_toolbar"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_user_big_pic"
+            android:layout_width="250dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp" />
+
+        <TextView
+            android:id="@+id/tv_username_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_centerInParent="true"
+        android:indeterminate="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />

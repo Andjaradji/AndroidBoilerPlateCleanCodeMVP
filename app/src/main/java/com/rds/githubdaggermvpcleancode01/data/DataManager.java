@@ -2,6 +2,8 @@ package com.rds.githubdaggermvpcleancode01.data;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.rds.githubdaggermvpcleancode01.callback.RequestCallback;
 import com.rds.githubdaggermvpcleancode01.data.db.AppDatabase;
 import com.rds.githubdaggermvpcleancode01.data.db.model.FavUser;
@@ -19,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import durdinapps.rxfirebase2.RxFirebaseAuth;
+import durdinapps.rxfirebase2.RxFirebaseUser;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.MaybeObserver;
@@ -282,20 +285,20 @@ public class DataManager {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        callback.beforeRequest();
+//                        callback.beforeRequest();
                         disposable = d;
                     }
 
                     @Override
                     public void onComplete() {
                         callback.onUserFound(favUser[0]);
-                        callback.afterRequest();
+//                        callback.afterRequest();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         callback.onRequestError(new NetworkError(e));
-                        callback.afterRequest();
+//                        callback.afterRequest();
                     }
                 });
     }
@@ -334,7 +337,6 @@ public class DataManager {
     }
 
     public Disposable firebaseLogin(final RequestCallback<AuthResult> callback, String email, String password) {
-
         RxFirebaseAuth.signInWithEmailAndPassword(mFirebaseAuth, email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -364,4 +366,60 @@ public class DataManager {
                 });
         return disposable;
     }
+
+    public Disposable firebaseUpdateUser(final RequestCallback<AuthResult> callback, FirebaseUser user, String username) {
+        UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build();
+        RxFirebaseUser.updateProfile(user, changeRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        callback.beforeRequest();
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.afterRequest();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onFirebaseAuthError(e.getMessage());
+                        callback.afterRequest();
+                    }
+                });
+        return disposable;
+    }
+
+
+    public Disposable firebaseSendEmailVerification(final RequestCallback<AuthResult> callback, FirebaseUser user) {
+        RxFirebaseUser.sendEmailVerification(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        callback.beforeRequest();
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.afterRequest();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onFirebaseAuthError(e.getMessage());
+                        callback.beforeRequest();
+                    }
+                });
+        return disposable;
+    }
+
+
 }

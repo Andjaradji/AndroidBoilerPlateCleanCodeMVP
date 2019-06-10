@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -20,6 +21,9 @@ import javax.inject.Inject;
 
 public class FavoritesActivity extends BaseActivity implements FavoritesView {
     ProgressBar progressBar;
+
+    Toolbar toolbar;
+
     @Inject
     LinearLayoutManager linearLayoutManager;
     @Inject
@@ -46,6 +50,11 @@ public class FavoritesActivity extends BaseActivity implements FavoritesView {
         setContentView(R.layout.activity_favorites);
         favUserList = findViewById(R.id.rv_favorites_list);
         progressBar = findViewById(R.id.progress_bar);
+        toolbar = findViewById(R.id.my_toolbar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("List Favorite User");
     }
 
     private void init() {

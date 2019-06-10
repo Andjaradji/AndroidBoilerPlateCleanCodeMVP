@@ -89,8 +89,12 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
 
     @Override
     public void handleResult(AuthResult authResult) {
+        registerPresenter.updateUser(authResult.getUser(), etName.getText().toString().trim());
+        registerPresenter.emailVerification(authResult.getUser());
+
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         intent.putExtra("email", authResult.getUser().getEmail());
+        intent.putExtra("name", authResult.getUser().getDisplayName());
         startActivity(intent);
         finish();
     }

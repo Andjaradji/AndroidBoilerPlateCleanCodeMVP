@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.GithubUser;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
@@ -32,6 +34,8 @@ public class HomeActivity extends BaseActivity implements HomeView {
     private static final int REQUEST_CODE = 111;
 
     ProgressBar progressBar;
+
+    Toolbar toolbar;
 
     @Inject
     HomePresenterContract homePresenter;
@@ -65,6 +69,12 @@ public class HomeActivity extends BaseActivity implements HomeView {
         setContentView(R.layout.activity_home);
         githubUserList = findViewById(R.id.rv_home_list);
         progressBar = findViewById(R.id.progress);
+        toolbar = findViewById(R.id.my_toolbar);
+
+        setSupportActionBar(toolbar);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        getSupportActionBar().setTitle("Welcome " + user.getDisplayName());
     }
 
     public void init() {

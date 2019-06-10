@@ -18,19 +18,6 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
         this.dataManager = mDataManager;
     }
 
-    @Override
-    public void beforeRequest() {
-        if (mView != null) {
-            mView.showLoading();
-        }
-    }
-
-    @Override
-    public void afterRequest() {
-        if (mView != null) {
-            mView.hideLoading();
-        }
-    }
 
     @Override
     public void getApiUserDetail(String userName) {
@@ -38,6 +25,15 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
         mDisposables.add(disposable);
     }
 
+//    @Override
+////    public void beforeRequest() {
+////        mView.showLoading();
+////    }
+
+//    @Override
+//    public void afterRequest() {
+//        mView.hideLoading();
+//    }
 
     @Override
     public void onRequestSuccess(Serializable data) {
@@ -80,7 +76,6 @@ public class UserDetailPresenter extends BasePresenter<UserDetailView, Serializa
 
     @Override
     public void removeFromFav(long id) {
-//        FavUser favUser = (FavUser) dataManager.findFavUser(this, id);
         dataManager.deleteFavUser(this, id);
     }
 
