@@ -44,7 +44,7 @@ public class RegisterPresenter extends BasePresenter<RegisterView, AuthResult> i
     @Override
     public void onRequestSuccess(AuthResult authResult) {
         super.onRequestSuccess(authResult);
-        mView.showSnackbar(authResult.getUser().getEmail() + " Registration Successful");
+//        mView.showSnackbar(authResult.getUser().getEmail() + " Registration Successful");
         mView.handleResult(authResult);
     }
 
@@ -54,5 +54,8 @@ public class RegisterPresenter extends BasePresenter<RegisterView, AuthResult> i
         mView.showSnackbar(errorMessage);
     }
 
-
+    @Override
+    public void onFirebaseCompleteable(String completeMessage) {
+        mView.showSnackbar(completeMessage);
+    }
 }

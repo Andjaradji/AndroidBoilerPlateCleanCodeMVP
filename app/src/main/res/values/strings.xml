@@ -9,4 +9,8 @@
     <string name="username">Username</string>
     <string name="register">Register</string>
     <string name="phone_number">Phone Number</string>
+    <string name="text_forgot_pw">Forgot Password ? Reset here...</string>
+    <string name="reset_pw">Reset password</string>
+    <string name="enter_your_email_for_confirmation">Enter your email for confirmation</string>
+    <string name="register_form">Register Form</string>
 </resources>

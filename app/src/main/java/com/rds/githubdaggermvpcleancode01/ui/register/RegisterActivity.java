@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -23,6 +24,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
     TextInputEditText etEmail;
     TextInputEditText etPassword;
     TextInputEditText etPhone;
+    Toolbar toolbar;
 
     ProgressBar progressBar;
 
@@ -50,6 +52,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView, View
         etPhone = findViewById(R.id.et_reg_phone);
         btnRegister = findViewById(R.id.btn_server_register);
         progressBar = findViewById(R.id.progress_register);
+        toolbar = findViewById(R.id.my_toolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.register_page);
 
         btnRegister.setOnClickListener(this);
 

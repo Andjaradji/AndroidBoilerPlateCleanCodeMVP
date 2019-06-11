@@ -48,6 +48,11 @@ public class BasePresenter<T extends BaseView, V> implements BasePresenterContra
     }
 
     @Override
+    public void onFirebaseCompleteable(String completeMessage) {
+
+    }
+
+    @Override
     public void onUserAdded() {
 
     }

@@ -74,6 +74,11 @@ public class HomeActivity extends BaseActivity implements HomeView {
         setSupportActionBar(toolbar);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (!user.isEmailVerified()) {
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         getSupportActionBar().setTitle("Welcome " + user.getDisplayName());
     }
 

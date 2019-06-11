@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -15,6 +16,7 @@ import com.rds.githubdaggermvpcleancode01.ConstantGroup;
 import com.rds.githubdaggermvpcleancode01.R;
 import com.rds.githubdaggermvpcleancode01.data.network.model.LoginResponse;
 import com.rds.githubdaggermvpcleancode01.ui.base.BaseActivity;
+import com.rds.githubdaggermvpcleancode01.ui.forgot_password.ForgotPasswordActivity;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomeActivity;
 import com.rds.githubdaggermvpcleancode01.ui.register.RegisterActivity;
 import com.rds.githubdaggermvpcleancode01.utils.UserValidationUtil;
@@ -26,6 +28,9 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     TextInputEditText etPassword;
     Button btnServerLogin;
     RelativeLayout layoutRegister;
+    RelativeLayout layoutForgotPw;
+    Toolbar toolbar;
+
 
     TextView tvLoginTitle;
     ProgressBar progressBar;
@@ -65,9 +70,15 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         tvLoginTitle = findViewById(R.id.tv_login_title);
         layoutRegister = findViewById(R.id.app_register_layout);
         progressBar = findViewById(R.id.progress_login);
+        toolbar = findViewById(R.id.my_toolbar);
+        layoutForgotPw = findViewById(R.id.rl_forgot_pw);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Login with email & password");
 
         btnServerLogin.setOnClickListener(this);
         layoutRegister.setOnClickListener(this);
+        layoutForgotPw.setOnClickListener(this);
     }
 
 
@@ -80,8 +91,16 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
             case R.id.app_register_layout:
                 launchRegister();
                 break;
+            case R.id.rl_forgot_pw:
+                forgotPw();
+                break;
         }
 
+    }
+
+    private void forgotPw() {
+        Intent forgotPwIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+        startActivity(forgotPwIntent);
     }
 
     private void serverLogin() {

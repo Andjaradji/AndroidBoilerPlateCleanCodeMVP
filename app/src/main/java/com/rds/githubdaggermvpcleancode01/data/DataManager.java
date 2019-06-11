@@ -396,7 +396,7 @@ public class DataManager {
     }
 
 
-    public Disposable firebaseSendEmailVerification(final RequestCallback<AuthResult> callback, FirebaseUser user) {
+    public Disposable firebaseSendEmailVerification(final RequestCallback<AuthResult> callback, final FirebaseUser user) {
         RxFirebaseUser.sendEmailVerification(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -409,6 +409,7 @@ public class DataManager {
 
                     @Override
                     public void onComplete() {
+                        callback.onFirebaseCompleteable("A verification email has been sent to " + user.getEmail());
                         callback.afterRequest();
                     }
 
@@ -416,6 +417,33 @@ public class DataManager {
                     public void onError(Throwable e) {
                         callback.onFirebaseAuthError(e.getMessage());
                         callback.beforeRequest();
+                    }
+                });
+        return disposable;
+    }
+
+
+    public Disposable firebaseSendPasswordResetEmail(final RequestCallback<AuthResult> callback, final String email) {
+        RxFirebaseAuth.sendPasswordResetEmail(mFirebaseAuth, email)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        callback.beforeRequest();
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        callback.onFirebaseCompleteable("Go to " + email + " to reset your password");
+                        callback.afterRequest();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onFirebaseAuthError(e.getMessage());
+                        callback.afterRequest();
                     }
                 });
         return disposable;

@@ -13,6 +13,8 @@ public interface RequestCallback<T> {
 
     void onFirebaseAuthError(String errorMessage);
 
+    void onFirebaseCompleteable(String completeMessage);
+
     void onUserAdded();
 
     void onUserRemoved();

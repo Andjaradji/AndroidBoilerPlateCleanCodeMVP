@@ -3,6 +3,7 @@ package com.rds.githubdaggermvpcleancode01.di.component;
 import com.rds.githubdaggermvpcleancode01.di.PerActivity;
 import com.rds.githubdaggermvpcleancode01.di.module.ActivityModule;
 import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesActivity;
+import com.rds.githubdaggermvpcleancode01.ui.forgot_password.ForgotPasswordActivity;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomeActivity;
 import com.rds.githubdaggermvpcleancode01.ui.login.LoginActivity;
 import com.rds.githubdaggermvpcleancode01.ui.login.SplashActivity;
@@ -26,4 +27,6 @@ public interface ActivityComponent {
     void inject(RegisterActivity registerActivity);
 
     void inject(SplashActivity splashActivity);
+
+    void inject(ForgotPasswordActivity forgotPasswordActivity);
 }

@@ -9,6 +9,8 @@ import com.rds.githubdaggermvpcleancode01.di.ActivityContext;
 import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesAdapter;
 import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesPresenter;
 import com.rds.githubdaggermvpcleancode01.ui.favorites.FavoritesPresenterContract;
+import com.rds.githubdaggermvpcleancode01.ui.forgot_password.ForgotPasswordPresenter;
+import com.rds.githubdaggermvpcleancode01.ui.forgot_password.ForgotPasswordPresenterContract;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomeAdapter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenter;
 import com.rds.githubdaggermvpcleancode01.ui.home.HomePresenterContract;
@@ -65,6 +67,11 @@ public class ActivityModule {
     @Provides
     RegisterPresenterContract provideRegisterPresenter(DataManager dataManager) {
         return new RegisterPresenter(dataManager);
+    }
+
+    @Provides
+    ForgotPasswordPresenterContract provideForgotPasswordPresenter(DataManager dataManager) {
+        return new ForgotPasswordPresenter(dataManager);
     }
 
 
